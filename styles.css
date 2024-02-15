@@ -66,7 +66,7 @@ body {
     font-family: Garamond, sans-serif;
 
     display: grid;
-    grid-template: 75px 1fr / minmax(250px, 1fr) 3fr;
+    grid-template: 75px 1fr / minmax(250px, 1fr) 4fr;
     height: 100vh;
 }
 
@@ -85,6 +85,70 @@ body {
 
 #header .material-icons {
     font-size: 36px;
+}
+
+#sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+#sidebar #add-button {
+    cursor: pointer;
+    color: var(--blue-accent);
+    font-size: 2.5rem;
+
+    width: 4rem;
+    height: 4rem;
+
+    background-color: var(--white-accent);
+    border: 1px solid var(--blue-accent);
+    border-radius: 50%;
+    box-shadow: 0.2rem 0.2rem 0.5rem rgba(49, 140, 231, 0.4);
+}
+
+#sidebar #add-button:hover {
+    color: var(--white-accent);
+    background-color: var(--blue-accent);
+    transition: 0.5s;
+}
+
+#sidebar #nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+#sidebar #nav ul[data-title]::before {
+    content: attr(data-title);
+
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#sidebar #nav li {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    background-color: var(--white-accent);
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+
+}
+
+#sidebar #nav li:hover {
+    background-color: var(--gray-accent);
+}
+
+#sidebar #nav li.active {
+    background-color: lightgray;
+    font-weight: bold;
 }
 
 #main-content {

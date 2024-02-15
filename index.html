@@ -10,12 +10,23 @@
 </head>
 <body>
     <div id="header">
-        <span class="material-icons md-48">checklist</span>
+        <span class="material-icons">checklist</span>
         <div>To-Do List</div>
     </div>
 
     <div id="sidebar">
+        <ul id="nav">
+            <ul id="default-options">
+                <li class="active"><span class="material-icons">today</span>Today</li>
+                <li><span class="material-icons">date_range</span>Week</li>
+            </ul>
 
+            <ul data-title="Projects" id="personal-projects">
+                <li><span class="material-icons">list</span>To-Do List</li>
+            </ul>
+        </ul>
+
+        <button id="add-button">+</button>
     </div>
 
     <div id="main-content">

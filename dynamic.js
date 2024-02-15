@@ -53,3 +53,21 @@ const scheduleController = function scheduleController() {
     return { getProjects, addProject, deleteProject, createProject, toDoItem };
 }();
 
+// DOM MANIPULATION
+
+const DOMController = function DOMController() {
+    const setupSidebar = function setupSidebar() {
+        const nav_items = document.querySelectorAll('#nav>ul>li');
+
+        nav_items.forEach((item) => {
+            item.addEventListener('click', (event) => {
+                event.target.classList.add('active');
+            })
+        });
+    }
+
+    return { setupSidebar };
+}();
+
+DOMController.setupSidebar();
+
