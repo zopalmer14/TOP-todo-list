@@ -141,7 +141,7 @@ body {
     font-size: 1rem;
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.25rem;
 
 }
 
@@ -163,12 +163,12 @@ body {
 dialog {
     padding: 0;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.25rem;
     box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.4);
 }
 
 dialog::backdrop {
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(0.25rem);
 }
 
 dialog #add-project-form {
@@ -204,7 +204,7 @@ dialog #add-project-form .sidebar > div:hover {
 
 dialog #add-project-form .sidebar > div:hover::before {
     content: '//';
-    margin-right: 5px;
+    margin-right: 0.25rem;
     font-size: 1.125rem;
 }
 
@@ -235,7 +235,7 @@ dialog #add-project-form .main-panel input, textarea {
     padding: 0.5rem;
     background-color: var(--gray-accent);
     border: 1px solid var(--gray-accent);
-    border-radius: 5px;
+    border-radius: 0.25rem;
 }
 
 dialog #add-project-form .main-panel textarea {
@@ -258,7 +258,7 @@ dialog #add-project-form .main-panel button {
     background-color: var(--gray-accent);
     color: var(--blue-accent);
     border: 1px solid var(--blue-accent);
-    border-radius: 5px;
+    border-radius: 0.25rem;
 }
 
 dialog #add-project-form .main-panel button:hover {
@@ -271,6 +271,10 @@ dialog #add-project-form .main-panel button:hover {
 
 body .main-panel {
     padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 body .main-panel fieldset {
@@ -293,7 +297,7 @@ body .main-panel fieldset .container {
     justify-content: center;
 
     padding: 0.5rem 1rem;
-    border-radius: 5px;
+    border-radius: 0.25rem;
 }
 
 body .main-panel fieldset .container.low {
@@ -327,4 +331,58 @@ body .main-panel fieldset .container.high:hover {
     color: var(--white-accent);
     background-color: var(--high-accent);
     transition: 0.5s;
+}
+
+/* TODO ITEM TESTING */
+
+body .main-panel .todo-item {
+    display: flex;
+    justify-content: space-between;
+
+    background-color: lightgray;
+    border-radius: 0.25rem;
+    box-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
+    padding: 0.5rem 1rem;
+}
+
+body .main-panel .todo-item > div {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+body .main-panel .todo-item .item-complete {
+    border: 1px solid var(--blue-accent);
+    border-radius: 0.25rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+body .main-panel .todo-item .item-complete:hover {
+    background-color: rgba(49, 140, 231, 0.3);;
+}
+
+body .main-panel .todo-item .item-desc {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    color: var(--blue-accent);
+    border: 1px solid var(--blue-accent);
+    border-radius: 0.25rem;
+}
+
+body .main-panel .todo-item .item-desc:hover {
+    color: black;
+    background-color: var(--blue-accent);
+    transition: 0.5s;
+}
+
+body .main-panel .todo-item .item-prio {
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+}
+
+body .main-panel .todo-item .item-prio.low {
+    background-color: var(--low-accent);
 }
