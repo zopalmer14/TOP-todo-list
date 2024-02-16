@@ -9,16 +9,65 @@
     <script src="dynamic.js" defer></script>
 </head>
 <body>
-    <div id="header">
+    <dialog>
+        <form method="dialog" id="add-project-form">
+            <div class="header">
+                <div>Create a New Project</div>
+            </div>
+
+            <div class="sidebar">
+                <div>Project</div>
+                <div>To-Do</div>
+            </div>
+
+            <div class="main-panel">
+                <div>
+                    <input required type="text" name="title" placeholder="Title: Personal Website">
+                    <textarea name="desc" placeholder="Details: 3 pages, portfolio section, bio, contact, ..."></textarea>
+                </div>
+
+                <div>
+                    <div class="label-float">
+                        <label for="dueDate">Due Date:</label>
+                        <input type="date" name="dueDate" id="dueDate">
+                    </div>
+
+                    <div id="last-row">
+                        <fieldset class="label-float">
+                            <legend>Priority:</legend>
+
+                            <label class="container" for="low">Low
+                                <input type="radio" name="prio" id="low" checked>
+                            </label>
+
+                            <label class="container" for="medium">Medium
+                                <input type="radio" name="prio" id="medium">
+                            </label>
+
+                            <label class="container" for="high">High
+                                <input type="radio" name="prio" id="high">
+                            </label>
+                        </fieldset>
+    
+                        <div>
+                            <button>Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </dialog>
+
+    <div class="header">
         <span class="material-icons">checklist</span>
         <div>To-Do List</div>
     </div>
 
     <div id="sidebar">
         <ul id="nav">
-            <ul id="default-options">
+            <ul data-title="Home" id="default-options">
                 <li class="active"><span class="material-icons">today</span>Today</li>
-                <li><span class="material-icons">date_range</span>Week</li>
+                <li><span class="material-icons">date_range</span>Weekly</li>
             </ul>
 
             <ul data-title="Projects" id="personal-projects">
@@ -29,8 +78,22 @@
         <button id="add-button">+</button>
     </div>
 
-    <div id="main-content">
+    <div class="main-panel">
+        <fieldset class="label-float">
+            <legend>Priority:</legend>
 
+            <label class="container low" for="low">Low
+                <input type="radio" name="prio" id="low" checked>
+            </label>
+
+            <label class="container medium" for="medium">Medium
+                <input type="radio" name="prio" id="medium">
+            </label>
+
+            <label class="container high" for="high">High
+                <input type="radio" name="prio" id="high">
+            </label>
+        </fieldset>
     </div>
 </body>
 </html>

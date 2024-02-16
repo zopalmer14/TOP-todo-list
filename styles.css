@@ -57,6 +57,9 @@ table {
     --white-accent: white;
     --gray-accent: whitesmoke;
     --blue-accent: #318CE7;
+    --low-accent: green;
+    --medium-accent: orange;
+    --high-accent: red;
 }
 
 /* Element Styling */
@@ -70,7 +73,7 @@ body {
     height: 100vh;
 }
 
-#header {
+.header {
     grid-column: 1 / 3;
     display: flex;
     align-items: center;
@@ -83,7 +86,7 @@ body {
     font-weight: bold;
 }
 
-#header .material-icons {
+.header .material-icons {
     font-size: 36px;
 }
 
@@ -151,6 +154,177 @@ body {
     font-weight: bold;
 }
 
-#main-content {
+.main-panel {
     background-color: var(--gray-accent);
+}
+
+/* DIALOG / FORM STYLING */
+
+dialog {
+    padding: 0;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.4);
+}
+
+dialog::backdrop {
+    backdrop-filter: blur(5px);
+}
+
+dialog #add-project-form {
+    display: grid;
+    grid-template: 50px 1fr / minmax(150px, 1fr) 3fr;
+
+    width: clamp(300px, 50vw, 800px);
+    min-height: 40vh;
+}
+
+dialog #add-project-form > div {
+    padding: 1rem;
+}
+
+dialog #add-project-form .header {
+    font-size: 1.5rem;
+}
+
+dialog #add-project-form .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+dialog #add-project-form .sidebar > div {
+    font-size: 1.25rem;
+    padding: 0.25rem;
+}
+
+dialog #add-project-form .sidebar > div:hover {
+    font-weight: bold;
+}
+
+dialog #add-project-form .sidebar > div:hover::before {
+    content: '//';
+    margin-right: 5px;
+    font-size: 1.125rem;
+}
+
+dialog #add-project-form .main-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+dialog #add-project-form .main-panel > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+dialog #add-project-form .main-panel .label-float {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+dialog #add-project-form .main-panel #last-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+dialog #add-project-form .main-panel input, textarea {
+    padding: 0.5rem;
+    background-color: var(--gray-accent);
+    border: 1px solid var(--gray-accent);
+    border-radius: 5px;
+}
+
+dialog #add-project-form .main-panel textarea {
+    min-height: 5rem;
+    resize: none;
+}
+
+dialog #add-project-form .main-panel input:focus, textarea:focus {
+    border: 1px solid var(--blue-accent);
+    outline: none;
+}
+
+dialog #add-project-form .main-panel input[type='date'] {
+    color: var(--blue-accent);
+    border: 1px solid var(--blue-accent);
+}
+
+dialog #add-project-form .main-panel button {
+    padding: 0.5rem 1rem;
+    background-color: var(--gray-accent);
+    color: var(--blue-accent);
+    border: 1px solid var(--blue-accent);
+    border-radius: 5px;
+}
+
+dialog #add-project-form .main-panel button:hover {
+    background-color: var(--blue-accent);
+    color: black;
+    transition: 0.5s;
+}
+
+/* Test */ 
+
+body .main-panel {
+    padding: 1rem;
+}
+
+body .main-panel fieldset {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+body .main-panel fieldset legend {
+    float: left;
+}
+
+body .main-panel fieldset input {
+    margin: 0;
+}
+
+body .main-panel fieldset .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+}
+
+body .main-panel fieldset .container.low {
+    color: var(--low-accent);
+    border: 1px solid var(--low-accent);
+}
+
+body .main-panel fieldset .container.medium {
+    color: var(--medium-accent);
+    border: 1px solid var(--medium-accent);
+}
+
+body .main-panel fieldset .container.high {
+    color: var(--high-accent);
+    border: 1px solid var(--high-accent);
+}
+
+body .main-panel fieldset .container.low:hover {
+    color: var(--white-accent);
+    background-color: var(--low-accent);
+    transition: 0.5s;
+}
+
+body .main-panel fieldset .container.medium:hover {
+    color: var(--white-accent);
+    background-color: var(--medium-accent);
+    transition: 0.5s;
+}
+
+body .main-panel fieldset .container.high:hover {
+    color: var(--white-accent);
+    background-color: var(--high-accent);
+    transition: 0.5s;
 }

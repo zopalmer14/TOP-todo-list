@@ -66,8 +66,25 @@ const DOMController = function DOMController() {
         });
     }
 
-    return { setupSidebar };
+    const setupAddProject = function setupAddProject() {
+        const add_button = document.querySelector('#add-button');
+        const dialog = document.querySelector('dialog');
+        const add_project_form = document.querySelector('#add_project_form'); 
+
+        // open the add project form when the user clicks the button
+        add_button.addEventListener('click', () => {
+            dialog.showModal();
+        });
+
+        // create a new project when the user submits the form
+        add_project_form.addEventListener('submit', (event) => {
+            console.log(event);
+        });
+    }
+
+    return { setupSidebar, setupAddProject };
 }();
 
 DOMController.setupSidebar();
+DOMController.setupAddProject();
 
