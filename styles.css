@@ -351,6 +351,10 @@ body .main-panel .todo-item > div {
     gap: 1.5rem;
 }
 
+body .main-panel .todo-item .item-title {
+    font-weight: bold;
+}
+
 body .main-panel .todo-item .item-complete {
     border: 1px solid var(--blue-accent);
     border-radius: 0.25rem;
@@ -385,4 +389,40 @@ body .main-panel .todo-item .item-prio {
 
 body .main-panel .todo-item .item-prio.low {
     background-color: var(--low-accent);
+}
+
+/* ADD TO-DO ITEM */
+
+body .main-panel .add-item {
+    background-color: var(--gray-accent);
+    font-weight: bold;
+    /* border: 1px solid lightgray; */
+    border-radius: 0.25rem;
+    box-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
+    padding: 0.5rem 1rem;
+
+    display: flex;
+    align-items: center;
+} 
+
+body .main-panel .add-item:hover {
+    background-color: var(--blue-accent);
+    color: var(--white-accent);
+    transition: all 0.5s;
+} 
+
+body .main-panel .add-item span {
+    margin-right: 22px;
+    border: 1px solid black;
+    border-radius: 50%;
+} 
+
+body .main-panel .add-item:hover span {
+    border-color: var(--white-accent);
+    color: var(--white-accent);
+    transition: 0.5s;
+} 
+
+body .main-panel .add-item .material-icons.md-18 { 
+    font-size: 18px; 
 }
