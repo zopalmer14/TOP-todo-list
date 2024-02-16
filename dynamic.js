@@ -69,7 +69,7 @@ const DOMController = function DOMController() {
     const setupAddProject = function setupAddProject() {
         const add_button = document.querySelector('#add-button');
         const dialog = document.querySelector('dialog');
-        const add_project_form = document.querySelector('#add_project_form'); 
+        const add_project_form = document.querySelector('#add-project-form'); 
 
         // open the add project form when the user clicks the button
         add_button.addEventListener('click', () => {
@@ -82,7 +82,7 @@ const DOMController = function DOMController() {
         });
     }
 
-    return { setupSidebar, setupAddProject };
+    return { setupSidebar, setupAddProject};
 }();
 
 DOMController.setupSidebar();

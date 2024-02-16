@@ -154,6 +154,13 @@ body {
     font-weight: bold;
 }
 
+#sidebar #nav li .material-icons.md-18 {
+    margin-right: 0.25rem;
+    font-size: 18px;
+    border: 1px solid black;
+    border-radius: 50%;
+} 
+
 .main-panel {
     background-color: var(--gray-accent);
 }
@@ -288,6 +295,10 @@ body .main-panel fieldset legend {
 }
 
 body .main-panel fieldset input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
     margin: 0;
 }
 
@@ -333,6 +344,24 @@ body .main-panel fieldset .container.high:hover {
     transition: 0.5s;
 }
 
+body .main-panel fieldset .container.low:has(input:checked) {
+    color: var(--white-accent);
+    background-color: var(--low-accent);
+    transition: 0.5s;
+}
+
+body .main-panel fieldset .container.medium:has(input:checked) {
+    color: var(--white-accent);
+    background-color: var(--medium-accent);
+    transition: 0.5s;
+}
+
+body .main-panel fieldset .container.high:has(input:checked) {
+    color: var(--white-accent);
+    background-color: var(--high-accent);
+    transition: 0.5s;
+}
+
 /* TODO ITEM TESTING */
 
 body .main-panel .todo-item {
@@ -356,7 +385,7 @@ body .main-panel .todo-item .item-title {
 }
 
 body .main-panel .todo-item .item-complete {
-    border: 1px solid var(--blue-accent);
+    border: 1px solid black;
     border-radius: 0.25rem;
     width: 1rem;
     height: 1rem;
@@ -396,7 +425,6 @@ body .main-panel .todo-item .item-prio.low {
 body .main-panel .add-item {
     background-color: var(--gray-accent);
     font-weight: bold;
-    /* border: 1px solid lightgray; */
     border-radius: 0.25rem;
     box-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
     padding: 0.5rem 1rem;

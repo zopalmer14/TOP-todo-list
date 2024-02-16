@@ -33,7 +33,7 @@
                     </div>
 
                     <div id="last-row">
-                        <fieldset class="label-float">
+                        <!-- <fieldset class="label-float">
                             <legend>Priority:</legend>
 
                             <label class="container" for="low">Low
@@ -47,7 +47,7 @@
                             <label class="container" for="high">High
                                 <input type="radio" name="prio" id="high">
                             </label>
-                        </fieldset>
+                        </fieldset> -->
     
                         <div>
                             <button>Submit</button>
@@ -72,6 +72,7 @@
 
             <ul data-title="Projects" id="personal-projects">
                 <li><span class="material-icons">list</span>To-Do List</li>
+                <li class="add-project"><span class="material-icons md-18">add</span>Add Project</li>
             </ul>
         </ul>
 
@@ -83,15 +84,15 @@
             <legend>Priority:</legend>
 
             <label class="container low" for="low">Low
-                <input type="radio" name="prio" id="low" checked>
+                <input type="radio" value="low" name="prio" id="low" checked>
             </label>
 
             <label class="container medium" for="medium">Medium
-                <input type="radio" name="prio" id="medium">
+                <input type="radio" value="medium" name="prio" id="medium">
             </label>
 
             <label class="container high" for="high">High
-                <input type="radio" name="prio" id="high">
+                <input type="radio" value="high" name="prio" id="high">
             </label>
         </fieldset>
 
