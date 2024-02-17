@@ -66,25 +66,26 @@ const DOMController = function DOMController() {
         });
     }
 
-    const setupAddProject = function setupAddProject() {
-        const add_button = document.querySelector('#add-button');
+    const setupAddTask = function setupAddTask() {
+        const add_task = document.querySelector('.add-item');
         const dialog = document.querySelector('dialog');
-        const add_project_form = document.querySelector('#add-project-form'); 
+        const add_task_form = document.querySelector('#add-task-form'); 
 
         // open the add project form when the user clicks the button
-        add_button.addEventListener('click', () => {
+        add_task.addEventListener('click', () => {
             dialog.showModal();
         });
 
-        // create a new project when the user submits the form
-        add_project_form.addEventListener('submit', (event) => {
-            console.log(event);
+        // create a new task when the user submits the form
+        add_task_form.addEventListener('submit', (event) => {
+            const testItem = scheduleController.toDoItem(event.target.title.value, event.target.desc.value, event.target.dueDate.value, event.target.prio.value);
+            console.log(testItem);
         });
     }
 
-    return { setupSidebar, setupAddProject};
+    return { setupSidebar, setupAddTask};
 }();
 
 DOMController.setupSidebar();
-DOMController.setupAddProject();
+DOMController.setupAddTask();
 

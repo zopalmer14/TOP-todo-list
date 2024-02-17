@@ -10,14 +10,9 @@
 </head>
 <body>
     <dialog>
-        <form method="dialog" id="add-project-form">
-            <div class="header">
-                <div>Create a New Project</div>
-            </div>
-
-            <div class="sidebar">
-                <div>Project</div>
-                <div>To-Do</div>
+        <form method="dialog" id="add-task-form">
+            <div class="banner">
+                <div>Create a New Task</div>
             </div>
 
             <div class="main-panel">
@@ -33,21 +28,21 @@
                     </div>
 
                     <div id="last-row">
-                        <!-- <fieldset class="label-float">
+                        <fieldset class="label-float">
                             <legend>Priority:</legend>
 
-                            <label class="container" for="low">Low
-                                <input type="radio" name="prio" id="low" checked>
+                            <label class="container low" for="prio_low">Low
+                                <input type="radio" name="prio" id="prio_low" value="low" checked>
                             </label>
 
-                            <label class="container" for="medium">Medium
-                                <input type="radio" name="prio" id="medium">
+                            <label class="container medium" for="prio_medium">Medium
+                                <input type="radio" name="prio" id="prio_medium" value="medium">
                             </label>
 
-                            <label class="container" for="high">High
-                                <input type="radio" name="prio" id="high">
+                            <label class="container high" for="prio_high">High
+                                <input type="radio" name="prio" id="prio_high" value="high">
                             </label>
-                        </fieldset> -->
+                        </fieldset>
     
                         <div>
                             <button>Submit</button>
@@ -75,27 +70,9 @@
                 <li class="add-project"><span class="material-icons md-18">add</span>Add Project</li>
             </ul>
         </ul>
-
-        <button id="add-button">+</button>
     </div>
 
     <div class="main-panel">
-        <fieldset class="label-float">
-            <legend>Priority:</legend>
-
-            <label class="container low" for="low">Low
-                <input type="radio" value="low" name="prio" id="low" checked>
-            </label>
-
-            <label class="container medium" for="medium">Medium
-                <input type="radio" value="medium" name="prio" id="medium">
-            </label>
-
-            <label class="container high" for="high">High
-                <input type="radio" value="high" name="prio" id="high">
-            </label>
-        </fieldset>
-
         <div class="todo-item">
             <div>
                 <div class="item-complete"></div>
