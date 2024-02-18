@@ -9,7 +9,20 @@
     <script src="dynamic.js" defer></script>
 </head>
 <body>
-    <dialog>
+    <dialog id="add-project-dialog">
+        <form method="dialog" id="add-project-form">
+            <div class="banner">
+                <div>Create a New Project</div>
+            </div>
+
+            <div class="main-panel">
+                <input required type="text" name="title" placeholder="Title: Personal Website">
+                <button>Submit</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="add-task-dialog">
         <form method="dialog" id="add-task-form">
             <div class="banner">
                 <div>Create a New Task</div>
@@ -53,43 +66,41 @@
         </form>
     </dialog>
 
-    <div class="header">
-        <span class="material-icons">checklist</span>
-        <div>To-Do List</div>
-    </div>
-
-    <div id="sidebar">
-        <ul id="nav">
-            <ul data-title="Home" id="default-options">
-                <li class="active"><span class="material-icons">today</span>Today</li>
-                <li><span class="material-icons">date_range</span>Weekly</li>
-            </ul>
-
-            <ul data-title="Projects" id="personal-projects">
-                <li><span class="material-icons">list</span>To-Do List</li>
-                <li class="add-project"><span class="material-icons md-18">add</span>Add Project</li>
-            </ul>
-        </ul>
-    </div>
-
-    <div class="main-panel">
-        <div class="todo-item">
-            <div>
-                <div class="item-complete"></div>
-                <div class="item-title">Item Title</div>
-            </div>
-
-            <div>
-                <div class="item-desc">Desc</div>
-                <div class="item-date">Feb 15th</div>
-                <div class="item-prio low"></div>
-                <span class="material-icons">edit_note</span>
-                <span class="material-icons">delete</span>
-            </div>
+    <div class="content">
+        <div class="header">
+            <span class="material-icons">checklist</span>
+            <div>To-Do List</div>
         </div>
 
-        <div class="add-item">
-            <span class="material-icons md-18">add</span>Add Task
+        <div id="sidebar">
+            <ul id="nav">
+                <ul data-title="Home" id="default-options">
+                    <li class="active"><span class="material-icons">today</span>Today</li>
+                    <li><span class="material-icons">date_range</span>Weekly</li>
+                </ul>
+                <ul data-title="Projects" id="personal-projects">
+                    <li class="add-project"><span class="material-icons md-18">add</span>Add Project</li>
+                </ul>
+            </ul>
+        </div>
+
+        <div class="main-panel">
+            <div class="todo-item">
+                <div>
+                    <div class="item-complete"></div>
+                    <div class="item-title">Item Title</div>
+                </div>
+                <div>
+                    <div class="item-desc">Desc</div>
+                    <div class="item-date">Feb 15th</div>
+                    <div class="item-prio low"></div>
+                    <span class="material-icons">edit_note</span>
+                    <span class="material-icons">delete</span>
+                </div>
+            </div>
+            <div class="add-item">
+                <span class="material-icons md-18">add</span>Add Task
+            </div>
         </div>
     </div>
 </body>
