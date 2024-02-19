@@ -75,6 +75,15 @@ body {
     height: 100vh;
 }
 
+.content ul[dataTitle]::before {
+    content: attr(dataTitle);
+
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
 /* HEADER STYLING */
 
 .content .header {
@@ -104,15 +113,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-}
-
-.content #sidebar #nav ul[data-title]::before {
-    content: attr(data-title);
-
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 1.5rem;
-    font-weight: bold;
 }
 
 .content #sidebar #nav li {
@@ -205,7 +205,7 @@ body {
 }
 
 .content .main-panel .todo-item .item-desc:hover {
-    color: black;
+    color: var(--white-accent);
     background-color: var(--blue-accent);
     transition: 0.5s;
 }
@@ -220,6 +220,14 @@ body {
     background-color: var(--low-accent);
 }
 
+.content .main-panel .todo-item .item-prio.medium {
+    background-color: var(--medium-accent);
+}
+
+.content .main-panel .todo-item .item-prio.high {
+    background-color: var(--high-accent);
+}
+
 /* ADD TO-DO ITEM */
 
 .content .main-panel .add-item {
@@ -229,6 +237,7 @@ body {
 
     display: flex;
     align-items: center;
+    order: 1;
 } 
 
 .content .main-panel .add-item:hover {

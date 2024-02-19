@@ -101,6 +101,84 @@ const DOMController = function DOMController() {
         });
     }
 
+    // displays the tasks associated with a given project
+    const displayTasks = function displayTasks(project) {
+        // dom references
+        const main_panel = document.querySelector('.content .main-panel');
+        console.log(main_panel);
+
+        // grab the task / to-do list
+        const tasks = project.getList();
+
+        // create an unsorted list for the project's tasks
+        const task_list = document.createElement('ul');
+        task_list.dataTitle = project.getTitle();
+
+        // create a list item for each task
+        for (let i = 0; i < tasks.length; i++) {
+            const task = tasks[i];
+            const task_item = document.createElement('li');
+            task_item.classList.add('todo-item');
+            task_item.dataIndex = i;
+
+            // build the left side of the task display
+            const left_side = document.createElement('div');
+
+            // complete status indicator
+            const complete_status = document.createElement('div');
+            complete_status.classList.add('item-complete');
+
+            // task title
+            const task_title = document.createElement('div');
+            task_title.textContent = task.title;
+            task_title.classList.add('item-title');
+
+            left_side.appendChild(complete_status);
+            left_side.appendChild(task_title);
+
+            // build the right side of the task display
+            const right_side = document.createElement('div');
+
+            // task desc button
+            const task_desc = document.createElement('div');
+            task_desc.textContent = 'Desc';
+            task_desc.classList.add('item-desc');
+
+            // task desc button
+            const task_date = document.createElement('div');
+            task_date.textContent = task.dueDate;
+            task_date.classList.add('item-date');
+
+            // task prio indicator
+            const task_prio = document.createElement('div');
+            task_prio.classList.add('item-prio');
+            task_prio.classList.add(task.prio);
+
+            // edit task symbol
+            const task_edit = document.createElement('span');
+            task_edit.textContent = 'edit_note';
+            task_edit.classList.add('material-icons');
+
+            // delete task symbol
+            const task_delete = document.createElement('span');
+            task_delete.textContent = 'delete';
+            task_delete.classList.add('material-icons');
+
+            right_side.appendChild(task_desc);
+            right_side.appendChild(task_date);
+            right_side.appendChild(task_prio);
+            right_side.appendChild(task_edit);
+            right_side.appendChild(task_delete);
+
+            // append both to the task_item
+            task_item.appendChild(left_side);
+            task_item.appendChild(right_side);
+
+            // append the item to the main panel
+            main_panel.appendChild(task_item);
+        }
+    };
+
     const setupAddProject = function setupAddProject() {
         // dom references
         const add_project = document.querySelector('.add-project');
@@ -138,14 +216,42 @@ const DOMController = function DOMController() {
         });
     }
 
-    return { setupSidebar, setupAddProject, setupAddTask};
+    return { setupSidebar, displayTasks, setupAddProject, setupAddTask};
 }();
-
-// back-end setup
-scheduleController.addProject('Testing');
 
 // front-end setup
 DOMController.setupSidebar();
 DOMController.setupAddTask();
 DOMController.setupAddProject();
+
+// back-end setup
+function debug() {
+    // add test project
+    scheduleController.addProject('Test Project');
+
+    // create a test task item
+    const test_task = scheduleController.toDoItem (
+        'To-Do Website Back-End', 
+        'Finish setting up the back-end handling of tasks and projects, then link up with front-end display',
+        'Feb 21st',
+        'medium'
+    );
+
+    // grab the test project
+    const projects = scheduleController.getProjects();
+    console.log(projects);
+    const test_project = projects[0];
+
+    // add the task to the project
+    test_project.addItem(test_task);
+
+    // grab the task list from the project
+    const tasks = test_project.getList();
+    console.log(tasks);
+
+    // display the tasks
+    DOMController.displayTasks(test_project);
+}
+
+debug();
 
