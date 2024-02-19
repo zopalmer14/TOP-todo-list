@@ -3,8 +3,11 @@
 const scheduleController = function scheduleController() {
     // list of projects
     const projectList = [];
+    const active_project = 0;
 
     const getProjects = () => projectList;
+    const getActiveProject = () => projectList[active_project];
+    const setActiveProject = (index) => active_project = index;
 
     // add project to list
     const addProject = function addProject(title) {
@@ -53,7 +56,7 @@ const scheduleController = function scheduleController() {
         return { title, desc, dueDate, prio };
     };
 
-    return { getProjects, addProject, deleteProject, toDoItem, createProject };
+    return { getProjects, getActiveProject, setActiveProject, addProject, deleteProject, toDoItem, createProject };
 }();
 
 // DOM MANIPULATION
