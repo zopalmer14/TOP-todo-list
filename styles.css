@@ -156,15 +156,17 @@ body {
 /* MAIN PANEL STYLING */
 
 .content .main-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
     background-color: var(--gray-accent);
     padding: 2rem;
 }
 
-.content .main-panel .todo-item {
+.content .main-panel .todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.content .main-panel .todo-list .todo-item {
     display: flex;
     justify-content: space-between;
 
@@ -174,28 +176,28 @@ body {
     padding: 0.5rem 1rem;
 }
 
-.content .main-panel .todo-item > div {
+.content .main-panel .todo-list .todo-item > div {
     display: flex;
     align-items: center;
     gap: 1.5rem;
 }
 
-.content .main-panel .todo-item .item-title {
+.content .main-panel .todo-list .todo-item .item-title {
     font-weight: bold;
 }
 
-.content .main-panel .todo-item .item-complete {
+.content .main-panel .todo-list .todo-item .item-complete {
     border: 1px solid black;
     border-radius: 0.25rem;
     width: 1rem;
     height: 1rem;
 }
 
-.content .main-panel .todo-item .item-complete:hover {
+.content .main-panel .todo-list .todo-item .item-complete:hover {
     background-color: rgba(49, 140, 231, 0.3);;
 }
 
-.content .main-panel .todo-item .item-desc {
+.content .main-panel .todo-list .todo-item .item-desc {
     font-size: 0.75rem;
     text-transform: uppercase;
     padding: 0.3rem 0.6rem;
@@ -204,33 +206,33 @@ body {
     border-radius: 0.25rem;
 }
 
-.content .main-panel .todo-item .item-desc:hover {
+.content .main-panel .todo-list .todo-item .item-desc:hover {
     color: var(--white-accent);
     background-color: var(--blue-accent);
     transition: 0.5s;
 }
 
-.content .main-panel .todo-item .item-prio {
+.content .main-panel .todo-list .todo-item .item-prio {
     border-radius: 50%;
     width: 1rem;
     height: 1rem;
 }
 
-.content .main-panel .todo-item .item-prio.low {
+.content .main-panel .todo-list .todo-item .item-prio.low {
     background-color: var(--low-accent);
 }
 
-.content .main-panel .todo-item .item-prio.medium {
+.content .main-panel .todo-list .todo-item .item-prio.medium {
     background-color: var(--medium-accent);
 }
 
-.content .main-panel .todo-item .item-prio.high {
+.content .main-panel .todo-list .todo-item .item-prio.high {
     background-color: var(--high-accent);
 }
 
 /* ADD TO-DO ITEM */
 
-.content .main-panel .add-item {
+.content .main-panel .todo-list .add-item {
     font-weight: bold;
     border-radius: 0.25rem;
     padding: 0.5rem 1rem;
@@ -240,19 +242,19 @@ body {
     order: 1;
 } 
 
-.content .main-panel .add-item:hover {
+.content .main-panel .todo-list .add-item:hover {
     background-color: var(--white-accent);
     box-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
     transition: all 0.5s;
 } 
 
-.content .main-panel .add-item span {
+.content .main-panel .todo-list .add-item span {
     margin-right: 22px;
     border: 1px solid black;
     border-radius: 50%;
 } 
 
-.content .main-panel .add-item .material-icons.md-18 { 
+.content .main-panel .todo-list .add-item .material-icons.md-18 { 
     font-size: 18px; 
 }
 
