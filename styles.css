@@ -69,6 +69,10 @@ body {
     font-family: Garamond, sans-serif;
 }
 
+.hidden {
+    display: none;
+}
+
 .content {
     display: grid;
     grid-template: 75px 1fr / minmax(250px, 1fr) 4fr;
@@ -106,7 +110,7 @@ body {
 /* SIDEBAR STYLING */
 
 .content #sidebar {
-    padding: 1rem;
+    padding: 2rem 1rem;
 }
 
 .content #sidebar #nav {
@@ -130,6 +134,7 @@ body {
 
 .content #sidebar #nav li:hover {
     background-color: var(--gray-accent);
+    cursor: pointer;
 }
 
 .content #sidebar #nav li.active {
@@ -167,37 +172,44 @@ body {
 }
 
 .content .main-panel .todo-list .todo-item {
-    display: flex;
-    justify-content: space-between;
-
     background-color: var(--white-accent);
     border-radius: 0.25rem;
     box-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
+}
+
+.content .main-panel .todo-list .todo-item .banner {
+    display: flex;
+    justify-content: space-between;
     padding: 0.5rem 1rem;
 }
 
-.content .main-panel .todo-list .todo-item > div {
+.content .main-panel .todo-list .todo-item .banner.border {
+    box-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
+}
+
+.content .main-panel .todo-list .todo-item .banner > div {
     display: flex;
     align-items: center;
     gap: 1.5rem;
 }
 
-.content .main-panel .todo-list .todo-item .item-title {
-    font-weight: bold;
-}
-
-.content .main-panel .todo-list .todo-item .item-complete {
+.content .main-panel .todo-list .todo-item .banner .item-complete {
     border: 1px solid black;
     border-radius: 0.25rem;
     width: 1rem;
     height: 1rem;
 }
 
-.content .main-panel .todo-list .todo-item .item-complete:hover {
-    background-color: rgba(49, 140, 231, 0.3);;
+.content .main-panel .todo-list .todo-item .banner .item-complete:hover {
+    background-color: rgba(49, 140, 231, 0.3);
+    cursor: pointer;
 }
 
-.content .main-panel .todo-list .todo-item .item-desc {
+.content .main-panel .todo-list .todo-item .banner .item-title {
+    font-weight: bold;
+}
+
+.content .main-panel .todo-list .todo-item .banner .item-desc {
     font-size: 0.75rem;
     text-transform: uppercase;
     padding: 0.3rem 0.6rem;
@@ -206,34 +218,39 @@ body {
     border-radius: 0.25rem;
 }
 
-.content .main-panel .todo-list .todo-item .item-desc:hover {
+.content .main-panel .todo-list .todo-item .banner .item-desc:hover {
     color: var(--white-accent);
     background-color: var(--blue-accent);
+    cursor: pointer;
     transition: 0.5s;
 }
 
-.content .main-panel .todo-list .todo-item .item-prio {
+.content .main-panel .todo-list .todo-item .banner .item-prio {
     border-radius: 50%;
     width: 1rem;
     height: 1rem;
 }
 
-.content .main-panel .todo-list .todo-item .item-prio.low {
+.content .main-panel .todo-list .todo-item .banner .item-prio.low {
     background-color: var(--low-accent);
 }
 
-.content .main-panel .todo-list .todo-item .item-prio.medium {
+.content .main-panel .todo-list .todo-item .banner .item-prio.medium {
     background-color: var(--medium-accent);
 }
 
-.content .main-panel .todo-list .todo-item .item-prio.high {
+.content .main-panel .todo-list .todo-item .banner .item-prio.high {
     background-color: var(--high-accent);
 }
 
-.content .main-panel .todo-list .todo-item span.material-icons:last-child:hover {
-    cursor: pointer;
+.content .main-panel .todo-list .todo-item .banner span.material-icons:last-child:hover {
     color: #E30000;
+    cursor: pointer;
     transition: 0.5s;
+}
+
+.content .main-panel .todo-list .todo-item .desc-extension {
+    padding: 1rem 2rem;
 }
 
 /* ADD TO-DO ITEM */
@@ -251,6 +268,7 @@ body {
 .content .main-panel .todo-list .add-item:hover {
     background-color: var(--white-accent);
     box-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
+    cursor: pointer;
     transition: all 0.5s;
 } 
 
@@ -395,40 +413,39 @@ dialog #add-task-form .main-panel fieldset .container.high {
     border: 1px solid var(--high-accent);
 }
 
-dialog #add-task-form .main-panel fieldset .container.low:hover {
+dialog #add-task-form .main-panel fieldset .container:hover {
     color: var(--white-accent);
-    background-color: var(--low-accent);
+    cursor: pointer;
     transition: 0.5s;
+}
+
+dialog #add-task-form .main-panel fieldset .container.low:hover {
+    background-color: var(--low-accent);
 }
 
 dialog #add-task-form .main-panel fieldset .container.medium:hover {
-    color: var(--white-accent);
     background-color: var(--medium-accent);
-    transition: 0.5s;
 }
 
 dialog #add-task-form .main-panel fieldset .container.high:hover {
-    color: var(--white-accent);
     background-color: var(--high-accent);
+}
+
+dialog #add-task-form .main-panel fieldset .container:has(input:checked) {
+    color: var(--white-accent);
     transition: 0.5s;
 }
 
 dialog #add-task-form .main-panel fieldset .container.low:has(input:checked) {
-    color: var(--white-accent);
     background-color: var(--low-accent);
-    transition: 0.5s;
 }
 
 dialog #add-task-form .main-panel fieldset .container.medium:has(input:checked) {
-    color: var(--white-accent);
     background-color: var(--medium-accent);
-    transition: 0.5s;
 }
 
 dialog #add-task-form .main-panel fieldset .container.high:has(input:checked) {
-    color: var(--white-accent);
     background-color: var(--high-accent);
-    transition: 0.5s;
 }
 
 dialog form .main-panel button {
@@ -442,5 +459,6 @@ dialog form .main-panel button {
 dialog form .main-panel button:hover {
     background-color: var(--blue-accent);
     color: var(--white-accent);
+    cursor: pointer;
     transition: 0.5s;
 }

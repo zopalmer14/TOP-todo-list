@@ -116,6 +116,10 @@ const DOMController = function DOMController() {
             task_item.classList.add('todo-item');
             task_item.dataset.index = i;
 
+            // we will build the banner for the list item one item at a time
+            const task_banner = document.createElement('div');
+            task_banner.classList.add('banner');
+
             // build the left side of the task display
             const left_side = document.createElement('div');
 
@@ -165,9 +169,25 @@ const DOMController = function DOMController() {
             right_side.appendChild(task_edit);
             right_side.appendChild(task_delete);
 
-            // append both to the task_item
-            task_item.appendChild(left_side);
-            task_item.appendChild(right_side);
+            // append both to the banner
+            task_banner.appendChild(left_side);
+            task_banner.appendChild(right_side);
+
+            // create the desc-extension 
+            const task_desc_ext = document.createElement('div');
+            task_desc_ext.textContent = task.desc;
+            task_desc_ext.classList.add('desc-extension');
+            task_desc_ext.classList.add('hidden');
+
+            // reactively show the desc-extension when the user clicks the 'desc' div
+            task_desc.addEventListener('click', () => {
+                task_desc_ext.classList.toggle('hidden');
+                task_banner.classList.toggle('border');
+            });
+
+            // append the banner and desc extension to the list_item
+            task_item.appendChild(task_banner);
+            task_item.appendChild(task_desc_ext);
 
             // append the item to the task list
             task_list.appendChild(task_item);
