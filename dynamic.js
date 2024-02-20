@@ -228,6 +228,28 @@ const pageManager = function pageManager() {
         // get the list of projects from the back-end
         const projects = scheduleController.getProjects();
 
+        function setupRemoveProject() {
+            // dom references
+            const delete_icons = document.querySelectorAll('#personal-projects span.material-icons.delete');
+            console.log(delete_icons);
+
+            // delete the associated project when the user clicks one of the delete material-icons 
+            delete_icons.forEach((delete_icon) => {
+                delete_icon.addEventListener('click', (event) => {
+                    // grab the project that the delete icon belongs to -- one level up the DOM tree 
+                    const project_item = event.target.parentNode;
+
+                    // remove the associated project from the project list
+                    const index = project_item.dataset.index;
+                    scheduleController.deleteProject(index);
+
+                    // re-render the list of projects to reflect the change
+                    DOMController.displayProjects(projects);
+                    setupRemoveProject();
+                });
+            });
+        }
+
         function setupAddProject() {
             // dom references
             const add_project = document.querySelector('.add-project');
@@ -246,6 +268,7 @@ const pageManager = function pageManager() {
     
                 // re-render the list of projects to reflect the change
                 DOMController.displayProjects(projects);
+                setupRemoveProject();
             });
         }
 
@@ -261,16 +284,18 @@ const pageManager = function pageManager() {
 
         // to setup the sidebar:
         // - display the list of projects 
-        // - make the project list dynamic and clickable 
+        // - make the project list dynamic and clickable (.active toggling) 
+        // - link up the delete logo's with the delete operation in the back-end
         // - make the 'add project' option dynamic by setting up the click and form logic
         DOMController.displayProjects(projects);
 
         // NEED TO FIX
-        const nav_items = document.querySelectorAll('#nav li');
-        nav_items.forEach((item) => {
-            item.addEventListener('click', switchActive);
+        const nav_home_items = document.querySelectorAll('#default-options li');
+        nav_home_items.forEach((home_item) => {
+            home_item.addEventListener('click', switchActive);
         });
 
+        setupRemoveProject();
         setupAddProject();
     };
 
