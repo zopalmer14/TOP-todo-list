@@ -33,7 +33,7 @@ const scheduleController = function scheduleController() {
             if (index > -1 && index < toDoList.length) {
                 toDoList.splice(index, 1); 
             } else {
-                console.log('Error: to-do item not found');
+                console.log(`Error: index out of bounds ${index}`);
             }
         };
 
@@ -51,7 +51,7 @@ const scheduleController = function scheduleController() {
         if (index > -1 && index < projectList.length) { 
             projectList.splice(index, 1); 
         } else {
-            console.log('Error: index out of bounds');
+            console.log(`Error: index out of bounds ${index}`);
         }
     };
 
@@ -163,11 +163,13 @@ const DOMController = function DOMController() {
             const task_edit = document.createElement('span');
             task_edit.textContent = 'edit_note';
             task_edit.classList.add('material-icons');
+            task_edit.classList.add('edit');
 
             // delete task symbol
             const task_delete = document.createElement('span');
             task_delete.textContent = 'delete';
             task_delete.classList.add('material-icons');
+            task_delete.classList.add('delete');
 
             // only append 'desc' div if the task has a description
             if (task.desc !== '') {
@@ -257,13 +259,13 @@ const pageManager = function pageManager() {
 
         function setupRemoveTask() {
             // dom references
-            const delete_icons = document.querySelectorAll('li.todo-item span.material-icons:last-child');
+            const delete_icons = document.querySelectorAll('li.todo-item span.material-icons.delete');
 
             // delete the associated list item when the user clicks one of the delete material-icons 
             delete_icons.forEach((delete_icon) => {
                 delete_icon.addEventListener('click', (event) => {
-                    // grab the list item the delete icon belongs to -- two levels up the DOM tree 
-                    const list_item = event.target.parentNode.parentNode;
+                    // grab the list item the delete icon belongs to -- three levels up the DOM tree 
+                    const list_item = event.target.parentNode.parentNode.parentNode;
 
                     // remove the associated task from the active project
                     const index = list_item.dataset.index;
