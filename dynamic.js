@@ -76,7 +76,10 @@ const DOMController = function DOMController() {
             const list_item = document.createElement('li');
             list_item.dataset.index = i;
 
-            // create a logo to add to the list item
+            // create the left side, which contains the logo and project title 
+            const left_side = document.createElement('div');
+
+            // create the logo 
             const logo = document.createElement('span');
             logo.classList.add('material-icons');
             logo.textContent = 'list';
@@ -85,9 +88,19 @@ const DOMController = function DOMController() {
             const title = document.createElement('div');
             title.textContent = project.getTitle();
 
-            // append both to the list item
-            list_item.appendChild(logo);
-            list_item.appendChild(title);
+            // append both to the left side
+            left_side.appendChild(logo);
+            left_side.appendChild(title);
+
+            // create the delete option
+            const item_delete = document.createElement('span');
+            item_delete.classList.add('material-icons');
+            item_delete.classList.add('delete');
+            item_delete.textContent = 'delete';
+
+            // append the left side and delete option to the list item
+            list_item.appendChild(left_side);
+            list_item.appendChild(item_delete);
 
             // append the list item to the list of personal projects
             personal_projects.appendChild(list_item);

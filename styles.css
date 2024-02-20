@@ -86,6 +86,14 @@ body {
     font-weight: bold;
 }
 
+.content span.material-icons.delete:hover {
+    color: #E30000;
+    /* transform: scale(1.05, 1.05);
+    backface-visibility: hidden; */
+    cursor: pointer;
+    transition: 0.5s;
+}
+
 /* HEADER STYLING */
 
 .content .header {
@@ -125,8 +133,7 @@ body {
 
 .content #sidebar #nav li {
     display: flex;
-    align-items: center;
-    gap: 0.25rem;
+    justify-content: space-between;
 
     background-color: var(--white-accent);
     font-size: 1rem;
@@ -154,6 +161,12 @@ body {
     box-shadow: none;
 }
 
+.content #sidebar #nav li > div {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
 .content #sidebar #nav li .material-icons.md-18 {
     margin-right: 0.25rem;
     font-size: 18px;
@@ -161,12 +174,7 @@ body {
     border-radius: 50%;
 } 
 
-.content #sidebar #nav #personal-projects {
-    display: flex;
-    flex-direction: column;
-}
-
-.content #sidebar #nav #personal-projects .add-project {
+.content #sidebar #nav li.add-project {
     order: 1;
 } 
 
@@ -280,12 +288,6 @@ body {
 
 .content .main-panel .todo-list .todo-item .banner span.material-icons.edit:hover {
     color: var(--low-accent);
-    cursor: pointer;
-    transition: 0.5s;
-}
-
-.content .main-panel .todo-list .todo-item .banner span.material-icons.delete:hover {
-    color: #E30000;
     cursor: pointer;
     transition: 0.5s;
 }
