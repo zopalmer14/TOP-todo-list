@@ -75,8 +75,8 @@ body {
     height: 100vh;
 }
 
-.content ul[dataTitle]::before {
-    content: attr(dataTitle);
+.content ul[data-title]::before {
+    content: attr(data-title);
 
     display: block;
     margin-bottom: 0.25rem;
@@ -228,6 +228,12 @@ body {
 
 .content .main-panel .todo-list .todo-item .item-prio.high {
     background-color: var(--high-accent);
+}
+
+.content .main-panel .todo-list .todo-item span.material-icons:last-child:hover {
+    cursor: pointer;
+    color: #E30000;
+    transition: 0.5s;
 }
 
 /* ADD TO-DO ITEM */

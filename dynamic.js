@@ -29,9 +29,8 @@ const scheduleController = function scheduleController() {
         };
 
         // delete to-do item from project
-        const deleteItem = function deleteItem(toDoItem) {
-            const index = toDoList.indexOf(toDoItem);
-            if (index > -1) { 
+        const deleteItem = function deleteItem(index) {
+            if (index > -1 && index < toDoList.length) {
                 toDoList.splice(index, 1); 
             } else {
                 console.log('Error: to-do item not found');
@@ -48,12 +47,11 @@ const scheduleController = function scheduleController() {
     };
 
     // delete project from list
-    const deleteProject = function deleteProject(project) {
-        const index = projectList.indexOf(project);
-        if (index > -1) { 
+    const deleteProject = function deleteProject(index) {
+        if (index > -1 && index < projectList.length) { 
             projectList.splice(index, 1); 
         } else {
-            console.log('Error: to-do item not found');
+            console.log('Error: index out of bounds');
         }
     };
 
@@ -73,8 +71,10 @@ const DOMController = function DOMController() {
         personal_projects.replaceChildren(add_project);
 
         // create a list item to represent each project
-        projects.forEach((project) => {
+        for (let i = 0; i < projects.length; i++) {
+            const project = projects[i];
             const list_item = document.createElement('li');
+            list_item.dataset.index = i;
 
             // create a logo to add to the list item
             const logo = document.createElement('span');
@@ -91,7 +91,7 @@ const DOMController = function DOMController() {
 
             // append the list item to the list of personal projects
             personal_projects.appendChild(list_item);
-        });
+        }
     };
 
     // displays the tasks associated with a given project
@@ -101,7 +101,7 @@ const DOMController = function DOMController() {
         const add_task = document.querySelector('li.add-item');
 
         // set the title of the list to the project title 
-        task_list.dataTitle = project.getTitle(); 
+        task_list.dataset.title = project.getTitle(); 
 
         // reset the current task_list and re-add the 'add task' option
         task_list.replaceChildren(add_task);
@@ -114,7 +114,7 @@ const DOMController = function DOMController() {
             const task = tasks[i];
             const task_item = document.createElement('li');
             task_item.classList.add('todo-item');
-            task_item.dataIndex = i;
+            task_item.dataset.index = i;
 
             // build the left side of the task display
             const left_side = document.createElement('div');
@@ -225,6 +225,27 @@ const pageManager = function pageManager() {
         // grab the active project from the back-end
         const active_project = scheduleController.getActiveProject();
 
+        function setupRemoveTask() {
+            // dom references
+            const delete_icons = document.querySelectorAll('li.todo-item span.material-icons:last-child');
+
+            // delete the associated list item when the user clicks one of the delete material-icons 
+            delete_icons.forEach((delete_icon) => {
+                delete_icon.addEventListener('click', (event) => {
+                    // grab the list item the delete icon belongs to -- two levels up the DOM tree 
+                    const list_item = event.target.parentNode.parentNode;
+
+                    // remove the associated task from the active project
+                    const index = list_item.dataset.index;
+                    active_project.deleteItem(index);
+
+                    // re-render the list of tasks for the active project to reflect the change
+                    DOMController.displayTasks(active_project);
+                    setupRemoveTask();
+                });
+            });
+        }
+
         function setupAddTask() {
             // dom references
             const add_task = document.querySelector('.add-item');
@@ -248,13 +269,16 @@ const pageManager = function pageManager() {
     
                 // re-render the list of tasks for the active project to reflect the change
                 DOMController.displayTasks(active_project);
+                setupRemoveTask();
             });
         }
 
         // to setup the main panel:
         // - display the tasks associated with the active project
+        // - link up the delete logo's with the delete operation in the back-end
         // - make the 'add_task' option dynamic by setting up the click and form logic
         DOMController.displayTasks(active_project);
+        setupRemoveTask();
         setupAddTask();
     };
 
