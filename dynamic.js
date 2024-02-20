@@ -236,6 +236,16 @@ const pageManager = function pageManager() {
             });
         }
 
+        // function that handles the user choosing a different project to display
+        const switchActive = (event) => {
+            // grab the currently active list item and toggle the class
+            const curr_active = document.querySelector('#nav li.active');
+            curr_active.classList.toggle('active');
+
+            // now make the targeted list item the active one
+            event.currentTarget.classList.add('active');
+        };
+
         // to setup the sidebar:
         // - display the list of projects 
         // - make the project list dynamic and clickable 
@@ -243,11 +253,9 @@ const pageManager = function pageManager() {
         DOMController.displayProjects(projects);
 
         // NEED TO FIX
-        const nav_items = document.querySelectorAll('#nav>ul>li');
+        const nav_items = document.querySelectorAll('#nav li');
         nav_items.forEach((item) => {
-            item.addEventListener('click', (event) => {
-                event.target.classList.add('active');
-            })
+            item.addEventListener('click', switchActive);
         });
 
         setupAddProject();
