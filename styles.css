@@ -194,15 +194,32 @@ body {
 }
 
 .content .main-panel .todo-list .todo-item .banner .item-complete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     border: 1px solid black;
     border-radius: 0.25rem;
     width: 1rem;
     height: 1rem;
+
+    color: transparent;
+    font-weight: bold;
 }
 
 .content .main-panel .todo-list .todo-item .banner .item-complete:hover {
     background-color: rgba(49, 140, 231, 0.3);
     cursor: pointer;
+}
+
+.content .main-panel .todo-list .todo-item .banner:has(.item-complete.finished) .item-title {
+    text-decoration: line-through;
+}
+
+.content .main-panel .todo-list .todo-item .banner .item-complete.finished {
+    border-color: var(--blue-accent);
+    background-color: var(--blue-accent);
+    color: var(--white-accent);
 }
 
 .content .main-panel .todo-list .todo-item .banner .item-title {
@@ -250,7 +267,7 @@ body {
 }
 
 .content .main-panel .todo-list .todo-item .desc-extension {
-    padding: 1rem 2rem;
+    padding: 0.75rem calc(2.5rem + 18px);
 }
 
 /* ADD TO-DO ITEM */

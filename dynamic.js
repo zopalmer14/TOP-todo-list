@@ -125,7 +125,13 @@ const DOMController = function DOMController() {
 
             // complete status indicator
             const complete_status = document.createElement('div');
+            complete_status.textContent = 'X';
             complete_status.classList.add('item-complete');
+
+            // reactively change the complete status of the item (changes appearance only, nothing in back-end)
+            complete_status.addEventListener('click', (event) => {
+                event.target.classList.toggle('finished');
+            })
 
             // task title
             const task_title = document.createElement('div');
@@ -163,7 +169,11 @@ const DOMController = function DOMController() {
             task_delete.textContent = 'delete';
             task_delete.classList.add('material-icons');
 
-            right_side.appendChild(task_desc);
+            // only append 'desc' div if the task has a description
+            if (task.desc !== '') {
+                right_side.appendChild(task_desc);
+            }
+
             right_side.appendChild(task_date);
             right_side.appendChild(task_prio);
             right_side.appendChild(task_edit);
