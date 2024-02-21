@@ -12,10 +12,11 @@ const scheduleController = function scheduleController() {
     // Project Factory Function (i.e. a list of to-do items)
     function projectItem(title) {
         const toDoList = [];
-
-        const getTitle = () => title;
-
         const getList = () => toDoList;
+
+        let project_title = title;
+        const getTitle = () => project_title;
+        const setTitle = (new_title) => project_title = new_title;
 
         // Task Item Factory Function 
         function toDoItem(title, desc, dueDate, prio) {
@@ -37,7 +38,7 @@ const scheduleController = function scheduleController() {
             }
         };
 
-        return { getTitle, getList, addItem, deleteItem }
+        return { getList, getTitle, setTitle, addItem, deleteItem }
     };
 
     // add project to list
@@ -92,15 +93,28 @@ const DOMController = function DOMController() {
             left_side.appendChild(logo);
             left_side.appendChild(title);
 
+            // create the right side, which contains the edit and delete options
+            const right_side = document.createElement('div');
+
+            // create the edit option
+            const item_edit = document.createElement('span');
+            item_edit.classList.add('material-icons');
+            item_edit.classList.add('edit');
+            item_edit.textContent = 'edit_note';
+
             // create the delete option
             const item_delete = document.createElement('span');
             item_delete.classList.add('material-icons');
             item_delete.classList.add('delete');
             item_delete.textContent = 'delete';
 
-            // append the left side and delete option to the list item
+            // append both to the right side
+            right_side.appendChild(item_edit);
+            right_side.appendChild(item_delete);
+
+            // append the left and right sides to the list item
             list_item.appendChild(left_side);
-            list_item.appendChild(item_delete);
+            list_item.appendChild(right_side);
 
             // append the list item to the list of personal projects
             personal_projects.appendChild(list_item);
@@ -231,13 +245,12 @@ const pageManager = function pageManager() {
         function setupRemoveProject() {
             // dom references
             const delete_icons = document.querySelectorAll('#personal-projects span.material-icons.delete');
-            console.log(delete_icons);
 
             // delete the associated project when the user clicks one of the delete material-icons 
             delete_icons.forEach((delete_icon) => {
                 delete_icon.addEventListener('click', (event) => {
-                    // grab the project that the delete icon belongs to -- one level up the DOM tree 
-                    const project_item = event.target.parentNode;
+                    // grab the project that the delete icon belongs to -- two levels up the DOM tree 
+                    const project_item = event.target.parentNode.parentNode;
 
                     // remove the associated project from the project list
                     const index = project_item.dataset.index;
@@ -246,6 +259,7 @@ const pageManager = function pageManager() {
                     // re-render the list of projects to reflect the change
                     DOMController.displayProjects(projects);
                     setupRemoveProject();
+                    setupEditProject();
                 });
             });
         }
@@ -269,6 +283,46 @@ const pageManager = function pageManager() {
                 // re-render the list of projects to reflect the change
                 DOMController.displayProjects(projects);
                 setupRemoveProject();
+                setupEditProject();
+            });
+        }
+
+        function setupEditProject() {
+            // dom references
+            const edit_icons = document.querySelectorAll('#nav span.material-icons.edit');
+            const edit_project_dialog = document.querySelector('#edit-project-dialog');
+            const edit_project_form = document.querySelector('#edit-project-form'); 
+    
+            // open the edit project form when the option
+            edit_icons.forEach((edit_icon) => {
+                edit_icon.addEventListener('click', (event) => {
+                    // transmit the project index through the interaction
+                    const index = event.target.parentNode.parentNode.dataset.index;
+                    edit_project_form.dataset.projectIndex = index;
+
+                    // also prefill the title input with the current project title
+                    const projects = scheduleController.getProjects();
+                    const assoc_project = projects[index];
+                    edit_project_form.title.value = assoc_project.getTitle();
+
+                    edit_project_dialog.showModal();
+                });
+            });
+    
+            // edit the project when the user submits the form
+            edit_project_form.addEventListener('submit', (event) => {
+                // grab the project index
+                const index = edit_project_form.dataset.projectIndex;
+
+                // edit the associated project with the form info
+                const projects = scheduleController.getProjects();
+                const assoc_project = projects[index];
+                assoc_project.setTitle(event.target.title.value);
+    
+                // re-render the list of projects to reflect the change
+                DOMController.displayProjects(projects);
+                setupRemoveProject();
+                setupEditProject();
             });
         }
 
@@ -287,6 +341,7 @@ const pageManager = function pageManager() {
         // - make the project list dynamic and clickable (.active toggling) 
         // - link up the delete logo's with the delete operation in the back-end
         // - make the 'add project' option dynamic by setting up the click and form logic
+        // - enable the user to edit the project's 
         DOMController.displayProjects(projects);
 
         // NEED TO FIX
@@ -297,6 +352,7 @@ const pageManager = function pageManager() {
 
         setupRemoveProject();
         setupAddProject();
+        setupEditProject()
     };
 
     const setupMainPanel = function setupMainPanel() {

@@ -10,7 +10,20 @@
 </head>
 <body>
     <dialog id="add-project-dialog">
-        <form method="dialog" id="add-project-form">
+        <form method="dialog" class="project-form" id="add-project-form">
+            <div class="banner">
+                <div>Create a New Project</div>
+            </div>
+
+            <div class="main-panel">
+                <input required type="text" name="title" placeholder="Title: Personal Website">
+                <button>Submit</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="edit-project-dialog">
+        <form method="dialog" class="project-form" id="edit-project-form">
             <div class="banner">
                 <div>Create a New Project</div>
             </div>

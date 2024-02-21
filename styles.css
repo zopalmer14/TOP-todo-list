@@ -94,6 +94,12 @@ body {
     transition: 0.5s;
 }
 
+.content span.material-icons.edit:hover {
+    color: var(--low-accent);
+    cursor: pointer;
+    transition: 0.5s;
+}
+
 /* HEADER STYLING */
 
 .content .header {
@@ -286,12 +292,6 @@ body {
     background-color: var(--high-accent);
 }
 
-.content .main-panel .todo-list .todo-item .banner span.material-icons.edit:hover {
-    color: var(--low-accent);
-    cursor: pointer;
-    transition: 0.5s;
-}
-
 .content .main-panel .todo-list .todo-item .desc-extension {
     padding: 0.75rem calc(2.5rem + 18px);
 }
@@ -327,7 +327,7 @@ body {
 
 /* DIALOG / FORM STYLING */
 
-dialog #add-project-form .main-panel button {
+dialog .project-form .main-panel button {
     align-self: flex-end;
 }
 
