@@ -216,12 +216,11 @@ const DOMController = function DOMController() {
             const task_desc_ext = document.createElement('div');
             task_desc_ext.textContent = task.desc;
             task_desc_ext.classList.add('desc-extension');
-            task_desc_ext.classList.add('hidden');
 
             // reactively show the desc-extension when the user clicks the 'desc' div
             task_desc.addEventListener('click', () => {
-                task_desc_ext.classList.toggle('hidden');
-                task_banner.classList.toggle('border');
+                task_desc_ext.classList.toggle('showing');
+                task_banner.classList.toggle('ext-showing');
             });
 
             // append the banner and desc extension to the list_item

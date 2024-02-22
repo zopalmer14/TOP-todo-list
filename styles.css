@@ -69,8 +69,22 @@ body {
     font-family: Garamond, sans-serif;
 }
 
-.hidden {
-    display: none;
+.showing {
+    display: block !important;
+    transform-origin: top;
+    animation: 1s ease-in-out fadeIn;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+    
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
 }
 
 .content {
@@ -198,28 +212,40 @@ body {
 }
 
 .content .main-panel .todo-list .todo-item {
+    border-radius: 0.25rem;
+}
+
+.content .main-panel .todo-item:has(.item-complete.finished) {
+    opacity: 0.5;
+    transition: 0.5s;
+}
+
+.content .main-panel .todo-item .banner {
     background-color: var(--white-accent);
+    border: 1.5px solid var(--white-accent);
     border-radius: 0.25rem;
     box-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
-}
+    padding: 0.5rem 1rem;
 
-.content .main-panel .todo-list .todo-item .banner {
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem 1rem;
+    z-index: 2;
 }
 
-.content .main-panel .todo-list .todo-item .banner.border {
-    box-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
+.content .main-panel .todo-item .banner.ext-showing {
+    border-bottom: 1.5px solid lightgray;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    transition: 0.5s ease-in-out;
 }
 
-.content .main-panel .todo-list .todo-item .banner > div {
+.content .main-panel .todo-item .banner > div {
     display: flex;
     align-items: center;
     gap: 1.5rem;
 }
 
-.content .main-panel .todo-list .todo-item .banner .item-complete {
+.content .main-panel .todo-item .banner .item-complete {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -234,71 +260,83 @@ body {
     font-weight: bold;
 }
 
-.content .main-panel .todo-list .todo-item .banner .item-complete:hover {
+.content .main-panel .todo-item .banner .item-complete:hover {
     background-color: rgba(49, 140, 231, 0.3);
     cursor: pointer;
+    transition: 0.5s;
 }
 
-.content .main-panel .todo-list .todo-item .banner:has(.item-complete.finished) {
-    opacity: 0.5;
-}
-
-.content .main-panel .todo-list .todo-item .banner:has(.item-complete.finished) .item-title {
-    text-decoration: line-through;
-}
-
-.content .main-panel .todo-list .todo-item .banner .item-complete.finished {
+.content .main-panel .todo-item .banner .item-complete.finished {
     border-color: var(--blue-accent);
     background-color: var(--blue-accent);
     color: var(--white-accent);
+    transition: 0.5s;
 }
 
-.content .main-panel .todo-list .todo-item .banner .item-title {
+.content .main-panel .todo-item .banner .item-title {
     font-weight: bold;
 }
 
-.content .main-panel .todo-list .todo-item .banner .item-desc {
+.content .main-panel .todo-item:has(.item-complete.finished) .item-title {
+    text-decoration: line-through;
+    transition: 0.5s;
+}
+
+.content .main-panel .todo-item .banner .item-desc {
+    color: var(--blue-accent);
     font-size: 0.75rem;
     text-transform: uppercase;
+    user-select: none;
+
     padding: 0.3rem 0.6rem;
-    color: var(--blue-accent);
     border: 1px solid var(--blue-accent);
     border-radius: 0.25rem;
 }
 
-.content .main-panel .todo-list .todo-item .banner .item-desc:hover {
+.content .main-panel .todo-item .banner .item-desc:hover {
     color: var(--white-accent);
     background-color: var(--blue-accent);
     cursor: pointer;
     transition: 0.5s;
 }
 
-.content .main-panel .todo-list .todo-item .banner .item-prio {
+.content .main-panel .todo-item .banner .item-prio {
     border-radius: 50%;
     width: 1rem;
     height: 1rem;
     margin: 0 0.25rem;
 }
 
-.content .main-panel .todo-list .todo-item .banner .item-prio.low {
+.content .main-panel .todo-item .banner .item-prio.low {
     background-color: var(--low-accent);
 }
 
-.content .main-panel .todo-list .todo-item .banner .item-prio.medium {
+.content .main-panel .todo-item .banner .item-prio.medium {
     background-color: var(--medium-accent);
 }
 
-.content .main-panel .todo-list .todo-item .banner .item-prio.high {
+.content .main-panel .todo-item .banner .item-prio.high {
     background-color: var(--high-accent);
 }
 
-.content .main-panel .todo-list .todo-item .desc-extension {
+.content .main-panel .todo-item .desc-extension {
+    display: none;
+
+    background-color: var(--white-accent);
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    box-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
     padding: 0.75rem calc(2.5rem + 18px);
+}
+
+.content .main-panel .todo-item:has(.item-complete.finished) .desc-extension {
+    text-decoration: line-through;
+    transition: 0.5s;
 }
 
 /* ADD TO-DO ITEM */
 
-.content .main-panel .todo-list .add-item {
+.content .main-panel .add-item {
     font-weight: bold;
     border-radius: 0.25rem;
     padding: 0.5rem 1rem;
@@ -308,26 +346,26 @@ body {
     order: 1;
 } 
 
-.content .main-panel .todo-list .add-item:hover {
+.content .main-panel .add-item:hover {
     background-color: var(--white-accent);
     box-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
     cursor: pointer;
     transition: all 0.5s;
 } 
 
-.content .main-panel .todo-list .add-item span {
+.content .main-panel .add-item span {
     margin-right: 22px;
     border: 1px solid black;
     border-radius: 50%;
 } 
 
-.content .main-panel .todo-list .add-item .material-icons.md-18 { 
+.content .main-panel .add-item .material-icons.md-18 { 
     font-size: 18px; 
 }
 
 /* DIALOG / FORM STYLING */
 
-dialog .project-form .main-panel button {
+.project-form .main-panel button {
     align-self: flex-end;
 }
 
@@ -342,7 +380,7 @@ dialog::backdrop {
     backdrop-filter: blur(0.25rem);
 }
 
-dialog form {
+form {
     display: grid;
     grid-template-rows: 50px 1fr;
 
@@ -351,11 +389,11 @@ dialog form {
     min-height: 40vh;
 }
 
-dialog form .banner, .main-panel {
+form .banner, .main-panel {
     padding: 1rem;
 }
 
-dialog .banner {
+form .banner {
     display: flex;
     align-items: center;
 
@@ -365,66 +403,66 @@ dialog .banner {
     font-weight: bold;
 }
 
-dialog form .main-panel {
+form .main-panel {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-dialog #add-task-form .main-panel > div {
+#add-task-form .main-panel > div {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-dialog form .main-panel input, textarea {
+form .main-panel input, textarea {
     padding: 0.5rem;
     background-color: var(--gray-accent);
     border: 1px solid var(--gray-accent);
     border-radius: 0.25rem;
 }
 
-dialog #add-task-form .main-panel textarea {
+#add-task-form .main-panel textarea {
     min-height: 5rem;
     resize: none;
 }
 
-dialog form .main-panel input:focus, textarea:focus {
+form .main-panel input:focus, textarea:focus {
     border: 1px solid var(--blue-accent);
     outline: none;
 }
 
-dialog #add-task-form .main-panel .label-float {
+#add-task-form .main-panel .label-float {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-dialog #add-task-form .main-panel legend, label[for='dueDate'] {
+#add-task-form .main-panel legend, label[for='dueDate'] {
     font-weight: bold;
 }
 
-dialog #add-task-form .main-panel input[type='date'] {
+#add-task-form .main-panel input[type='date'] {
     color: var(--blue-accent);
     border: 1px solid var(--blue-accent);
 }
 
-dialog #add-task-form .main-panel #last-row {
+#add-task-form .main-panel #last-row {
     display: flex;
     justify-content: space-between;
 }
 
-dialog #add-task-form .main-panel fieldset {
+#add-task-form .main-panel fieldset {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-dialog #add-task-form .main-panel fieldset legend {
+#add-task-form .main-panel fieldset legend {
     float: left;
 }
 
-dialog #add-task-form .main-panel fieldset input {
+#add-task-form .main-panel fieldset input {
     position: absolute;
     opacity: 0;
     height: 0;
@@ -432,7 +470,7 @@ dialog #add-task-form .main-panel fieldset input {
     margin: 0;
 }
 
-dialog #add-task-form .main-panel fieldset .container {
+#add-task-form .main-panel fieldset .container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -441,57 +479,57 @@ dialog #add-task-form .main-panel fieldset .container {
     border-radius: 0.25rem;
 }
 
-dialog #add-task-form .main-panel fieldset .container.low {
+#add-task-form .main-panel fieldset .container.low {
     color: var(--low-accent);
     border: 1px solid var(--low-accent);
 }
 
-dialog #add-task-form .main-panel fieldset .container.medium {
+#add-task-form .main-panel fieldset .container.medium {
     color: var(--medium-accent);
     border: 1px solid var(--medium-accent);
 }
 
-dialog #add-task-form .main-panel fieldset .container.high {
+#add-task-form .main-panel fieldset .container.high {
     color: var(--high-accent);
     border: 1px solid var(--high-accent);
 }
 
-dialog #add-task-form .main-panel fieldset .container:hover {
+#add-task-form .main-panel fieldset .container:hover {
     color: var(--white-accent);
     cursor: pointer;
     transition: 0.5s;
 }
 
-dialog #add-task-form .main-panel fieldset .container.low:hover {
+#add-task-form .main-panel fieldset .container.low:hover {
     background-color: var(--low-accent);
 }
 
-dialog #add-task-form .main-panel fieldset .container.medium:hover {
+#add-task-form .main-panel fieldset .container.medium:hover {
     background-color: var(--medium-accent);
 }
 
-dialog #add-task-form .main-panel fieldset .container.high:hover {
+#add-task-form .main-panel fieldset .container.high:hover {
     background-color: var(--high-accent);
 }
 
-dialog #add-task-form .main-panel fieldset .container:has(input:checked) {
+#add-task-form .main-panel fieldset .container:has(input:checked) {
     color: var(--white-accent);
     transition: 0.5s;
 }
 
-dialog #add-task-form .main-panel fieldset .container.low:has(input:checked) {
+#add-task-form .main-panel fieldset .container.low:has(input:checked) {
     background-color: var(--low-accent);
 }
 
-dialog #add-task-form .main-panel fieldset .container.medium:has(input:checked) {
+#add-task-form .main-panel fieldset .container.medium:has(input:checked) {
     background-color: var(--medium-accent);
 }
 
-dialog #add-task-form .main-panel fieldset .container.high:has(input:checked) {
+#add-task-form .main-panel fieldset .container.high:has(input:checked) {
     background-color: var(--high-accent);
 }
 
-dialog form .main-panel button {
+form .main-panel button {
     padding: 0.5rem 1rem;
     background-color: var(--gray-accent);
     color: var(--blue-accent);
@@ -499,7 +537,7 @@ dialog form .main-panel button {
     border-radius: 0.25rem;
 }
 
-dialog form .main-panel button:hover {
+form .main-panel button:hover {
     background-color: var(--blue-accent);
     color: var(--white-accent);
     cursor: pointer;
