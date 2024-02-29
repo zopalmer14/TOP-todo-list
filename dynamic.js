@@ -87,10 +87,10 @@ const DOMController = function DOMController() {
             list_item.dataset.index = projectIndex;
     
             // create the left side, which contains the logo and project title 
-            const item_left_side = createLeftSide();
+            const item_left_side = createProjectLeftSide();
     
             // create the right side, which contains the edit and delete options
-            const item_right_side = createRightSide(); 
+            const item_right_side = createProjectRightSide(); 
     
             // append the left and right sides to the list item
             list_item.appendChild(item_left_side);
@@ -98,7 +98,7 @@ const DOMController = function DOMController() {
     
             return list_item;
             
-            function createLeftSide() {
+            function createProjectLeftSide() {
                 const left_side = document.createElement('div');
     
                 // create the logo 
@@ -117,7 +117,7 @@ const DOMController = function DOMController() {
                 return left_side;
             }
             
-            function createRightSide() {
+            function createProjectRightSide() {
                 const right_side = document.createElement('div');
     
                 // create the edit option
@@ -158,100 +158,125 @@ const DOMController = function DOMController() {
         // grab the task / to-do list
         const tasks = project.getList();
 
-        // create a list item for each task
         for (let i = 0; i < tasks.length; i++) {
+            // create a list item to represent each task
             const task = tasks[i];
+            const task_item = createTaskItem(task, i); 
+
+            // append the item to the task list
+            task_list.appendChild(task_item);
+        }
+
+        // helper function to create a task item
+        function createTaskItem(task, taskIndex) {
             const task_item = document.createElement('li');
             task_item.classList.add('todo-item');
-            task_item.dataset.index = i;
+            task_item.dataset.index = taskIndex;
 
-            // we will build the banner for the list item one item at a time
-            const task_banner = document.createElement('div');
-            task_banner.classList.add('banner');
-
-            // build the left side of the task display
-            const left_side = document.createElement('div');
-
-            // complete status indicator
-            const complete_status = document.createElement('div');
-            complete_status.textContent = 'X';
-            complete_status.classList.add('item-complete');
-
-            // reactively change the complete status of the item (changes appearance only, nothing in back-end)
-            complete_status.addEventListener('click', (event) => {
-                event.target.classList.toggle('finished');
-            })
-
-            // task title
-            const task_title = document.createElement('div');
-            task_title.textContent = task.title;
-            task_title.classList.add('item-title');
-
-            left_side.appendChild(complete_status);
-            left_side.appendChild(task_title);
-
-            // build the right side of the task display
-            const right_side = document.createElement('div');
-
-            // task desc button
-            const task_desc = document.createElement('div');
-            task_desc.textContent = 'Desc';
-            task_desc.classList.add('item-desc');
-
-            // task desc button
-            const task_date = document.createElement('div');
-            task_date.textContent = task.dueDate;
-            task_date.classList.add('item-date');
-
-            // task prio indicator
-            const task_prio = document.createElement('div');
-            task_prio.classList.add('item-prio');
-            task_prio.classList.add(task.prio);
-
-            // edit task symbol
-            const task_edit = document.createElement('span');
-            task_edit.textContent = 'edit_note';
-            task_edit.classList.add('material-icons');
-            task_edit.classList.add('edit');
-
-            // delete task symbol
-            const task_delete = document.createElement('span');
-            task_delete.textContent = 'delete';
-            task_delete.classList.add('material-icons');
-            task_delete.classList.add('delete');
-            pageInterface.setupDeleteTask(task_delete);
-
-            // only append 'desc' div if the task has a description
-            if (task.desc !== '') {
-                right_side.appendChild(task_desc);
-            }
-
-            right_side.appendChild(task_date);
-            right_side.appendChild(task_prio);
-            right_side.appendChild(task_edit);
-            right_side.appendChild(task_delete);
-
-            // append both to the banner
-            task_banner.appendChild(left_side);
-            task_banner.appendChild(right_side);
+            // create a banner for the task item 
+            const task_banner = createBanner();
 
             // create the desc-extension 
             const task_desc_ext = document.createElement('div');
             task_desc_ext.textContent = task.desc;
             task_desc_ext.classList.add('desc-extension');
 
-            // reactively show the desc-extension when the user clicks the 'desc' div
-            task_desc.addEventListener('click', () => {
-                task_desc_ext.classList.toggle('showing');
-                task_banner.classList.toggle('ext-showing');
-            });
-
-            // append the banner and desc extension to the list_item
+            // append the banner and desc extension to the task item
             task_item.appendChild(task_banner);
             task_item.appendChild(task_desc_ext);
 
-            // append the item to the task list
-            task_list.appendChild(task_item);
+            return task_item;
+
+            function createBanner() {
+                const task_banner = document.createElement('div');
+                task_banner.classList.add('banner');
+
+                // build the left side of the banner
+                const left_side = createBannerLeft(); 
+
+                // build the left side of the banner
+                const right_side = createBannerRight();
+
+                // append both to the banner
+                task_banner.appendChild(left_side);
+                task_banner.appendChild(right_side);
+
+                return task_banner;
+                
+                function createBannerLeft() {
+                    const left_side = document.createElement('div');
+
+                    // completion status indicator
+                    const complete_status = document.createElement('div');
+                    complete_status.textContent = 'X';
+                    complete_status.classList.add('item-complete');
+
+                    // reactively change the completion status of the item (changes appearance only, nothing in back-end)
+                    complete_status.addEventListener('click', (event) => {
+                        event.target.classList.toggle('finished');
+                    })
+
+                    // task title
+                    const task_title = document.createElement('div');
+                    task_title.textContent = task.title;
+                    task_title.classList.add('item-title');
+
+                    left_side.appendChild(complete_status);
+                    left_side.appendChild(task_title);
+
+                    return left_side;
+                }
+
+                function createBannerRight() {
+                    const right_side = document.createElement('div');
+
+                    // task desc button
+                    const task_desc = document.createElement('div');
+                    task_desc.textContent = 'Desc';
+                    task_desc.classList.add('item-desc');
+
+                    // reactively show the desc-extension when the user clicks the 'desc' div
+                    task_desc.addEventListener('click', () => {
+                        task_desc_ext.classList.toggle('showing');
+                        task_banner.classList.toggle('ext-showing');
+                    });
+
+                    // task due date
+                    const task_date = document.createElement('div');
+                    task_date.textContent = task.dueDate;
+                    task_date.classList.add('item-date');
+
+                    // task prio indicator
+                    const task_prio = document.createElement('div');
+                    task_prio.classList.add('item-prio');
+                    task_prio.classList.add(task.prio);
+
+                    // edit task symbol
+                    const task_edit = document.createElement('span');
+                    task_edit.textContent = 'edit_note';
+                    task_edit.classList.add('material-icons');
+                    task_edit.classList.add('edit');
+
+                    // delete task symbol
+                    const task_delete = document.createElement('span');
+                    task_delete.textContent = 'delete';
+                    task_delete.classList.add('material-icons');
+                    task_delete.classList.add('delete');
+                    pageInterface.setupDeleteTask(task_delete);
+
+                    // only append 'desc' div if the task has a description
+                    if (task.desc !== '') {
+                        right_side.appendChild(task_desc);
+                    }
+
+                    right_side.appendChild(task_date);
+                    right_side.appendChild(task_prio);
+                    right_side.appendChild(task_edit);
+                    right_side.appendChild(task_delete);
+
+                    return right_side;
+                }
+            }
         }
     };
 
