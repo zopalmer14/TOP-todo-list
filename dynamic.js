@@ -71,55 +71,75 @@ const DOMController = function DOMController() {
         // reset the project list and re-add the 'add project' option
         personal_projects.replaceChildren(add_project);
 
-        // create a list item to represent each project
         for (let i = 0; i < projects.length; i++) {
-            const project = projects[i];
-            const list_item = document.createElement('li');
-            list_item.dataset.index = i;
-
-            // create the left side, which contains the logo and project title 
-            const left_side = document.createElement('div');
-
-            // create the logo 
-            const logo = document.createElement('span');
-            logo.classList.add('material-icons');
-            logo.textContent = 'list';
-
-            // create a div to hold the title
-            const title = document.createElement('div');
-            title.textContent = project.getTitle();
-
-            // append both to the left side
-            left_side.appendChild(logo);
-            left_side.appendChild(title);
-
-            // create the right side, which contains the edit and delete options
-            const right_side = document.createElement('div');
-
-            // create the edit option
-            const item_edit = document.createElement('span');
-            item_edit.classList.add('material-icons');
-            item_edit.classList.add('edit');
-            item_edit.textContent = 'edit_note';
-            pageInterface.setupEditProject(item_edit);
-
-            // create the delete option
-            const item_delete = document.createElement('span');
-            item_delete.classList.add('material-icons');
-            item_delete.classList.add('delete');
-            item_delete.textContent = 'delete';
-            pageInterface.setupDeleteProject(item_delete);
-
-            // append both to the right side
-            right_side.appendChild(item_edit);
-            right_side.appendChild(item_delete);
-
-            // append the left and right sides to the list item
-            list_item.appendChild(left_side);
-            list_item.appendChild(right_side);
+            // create a list item to represent each project
+            const curr_project = projects[i];
+            const project_item = createProjectItem(curr_project, i);
 
             // append the list item to the list of personal projects
-            personal_projects.appendChild(list_item);
+            personal_projects.appendChild(project_item);
+        }
+
+        // helper function which handles creating the project item's
+        function createProjectItem(project, projectIndex) {
+            // create a list item and assign it the project's index
+            const list_item = document.createElement('li');
+            list_item.dataset.index = projectIndex;
+    
+            // create the left side, which contains the logo and project title 
+            const item_left_side = createLeftSide();
+    
+            // create the right side, which contains the edit and delete options
+            const item_right_side = createRightSide(); 
+    
+            // append the left and right sides to the list item
+            list_item.appendChild(item_left_side);
+            list_item.appendChild(item_right_side);
+    
+            return list_item;
+            
+            function createLeftSide() {
+                const left_side = document.createElement('div');
+    
+                // create the logo 
+                const logo = document.createElement('span');
+                logo.classList.add('material-icons');
+                logo.textContent = 'list';
+    
+                // create a div to hold the title
+                const title = document.createElement('div');
+                title.textContent = project.getTitle();
+    
+                // append both to the left side
+                left_side.appendChild(logo);
+                left_side.appendChild(title);
+    
+                return left_side;
+            }
+            
+            function createRightSide() {
+                const right_side = document.createElement('div');
+    
+                // create the edit option
+                const item_edit = document.createElement('span');
+                item_edit.classList.add('material-icons');
+                item_edit.classList.add('edit');
+                item_edit.textContent = 'edit_note';
+                pageInterface.setupEditProject(item_edit);
+    
+                // create the delete option
+                const item_delete = document.createElement('span');
+                item_delete.classList.add('material-icons');
+                item_delete.classList.add('delete');
+                item_delete.textContent = 'delete';
+                pageInterface.setupDeleteProject(item_delete);
+    
+                // append both to the right side
+                right_side.appendChild(item_edit);
+                right_side.appendChild(item_delete);
+    
+                return right_side;
+            }
         }
     };
 
@@ -241,118 +261,121 @@ const DOMController = function DOMController() {
 // abstract layer outside of the controllers that facilitates their communication
 const pageInterface = function pageInterface() {
     const initializePage = function initializePage() {
+        // to initialize the page:
+        // - setup the sidebar 
+        // - setup the main panel
         setupSidebar();
         setupMainPanel();
-    }
 
-    function setupSidebar() {
-        // to setup the sidebar:
-        // - display the list of projects 
-        // - make the project list dynamic and clickable (.active toggling) 
-        // - make the 'add project' option dynamic by setting up the click and form logic
-        // - setup the edit project form 
-        const projects = scheduleController.getProjects();
-        DOMController.displayProjects(projects);
-        setupInboxToggle();
-        setupAddProject();
-        setupEditProjectForm();
-
-        function setupAddProject() {
-            // dom references
-            const add_project = document.querySelector('.add-project');
-            const add_project_dialog = document.querySelector('#add-project-dialog');
-            const add_project_form = document.querySelector('#add-project-form'); 
+        function setupSidebar() {
+            // to setup the sidebar:
+            // - display the list of projects 
+            // - make the project list dynamic and clickable (.active toggling) 
+            // - make the 'add project' option dynamic by setting up the click and form logic
+            // - setup the edit project form 
+            const projects = scheduleController.getProjects();
+            DOMController.displayProjects(projects);
+            setupInboxToggle();
+            setupAddProject();
+            setupEditProjectForm();
     
-            // open the add project form when the user clicks the button
-            add_project.addEventListener('click', () => {
-                add_project_dialog.showModal();
-            });
-    
-            // create a new project when the user submits the form
-            add_project_form.addEventListener('submit', (event) => {
-                // create a new project with the form info and add it to the project list
-                scheduleController.addProject(event.target.title.value);
-    
-                // re-render the list of projects to reflect the change
-                const projects = scheduleController.getProjects();
-                DOMController.displayProjects(projects);
-            });
-        }
-
-        function setupEditProjectForm() {
-            // dom references
-            const edit_project_form = document.querySelector('#edit-project-form'); 
-
-            // edit the project when the user submits the form
-            edit_project_form.addEventListener('submit', (event) => {
-                // grab the project index
-                const index = edit_project_form.dataset.projectIndex;
-
-                // edit the associated project with the form info
-                const projects = scheduleController.getProjects();
-                const assoc_project = projects[index];
-                assoc_project.setTitle(event.target.title.value);
-
-                // re-render the list of projects to reflect the change
-                DOMController.displayProjects(projects);
-            });
-        }
-
-        // NEED TO FIX
-        // function that handles the user choosing a different project to display
-        function setupInboxToggle() {
-            // dom references
-            const nav_home_items = document.querySelectorAll('#default-options li');
-            nav_home_items.forEach((home_item) => {
-                home_item.addEventListener('click', (event) => {
-                    // grab the currently active list item and toggle the class
-                    const curr_active = document.querySelector('#nav li.active');
-                    curr_active.classList.toggle('active');
+            function setupAddProject() {
+                // dom references
+                const add_project = document.querySelector('.add-project');
+                const add_project_dialog = document.querySelector('#add-project-dialog');
+                const add_project_form = document.querySelector('#add-project-form'); 
         
-                    // now make the targeted list item the active one
-                    event.currentTarget.classList.add('active');
+                // open the add project form when the user clicks the button
+                add_project.addEventListener('click', () => {
+                    add_project_dialog.showModal();
                 });
-            });
+        
+                // create a new project when the user submits the form
+                add_project_form.addEventListener('submit', (event) => {
+                    // create a new project with the form info and add it to the project list
+                    scheduleController.addProject(event.target.title.value);
+        
+                    // re-render the list of projects to reflect the change
+                    const projects = scheduleController.getProjects();
+                    DOMController.displayProjects(projects);
+                });
+            }
+    
+            function setupEditProjectForm() {
+                // dom references
+                const edit_project_form = document.querySelector('#edit-project-form'); 
+    
+                // edit the project when the user submits the form
+                edit_project_form.addEventListener('submit', (event) => {
+                    // grab the project index
+                    const index = edit_project_form.dataset.projectIndex;
+    
+                    // edit the associated project with the form info
+                    const projects = scheduleController.getProjects();
+                    const assoc_project = projects[index];
+                    assoc_project.setTitle(event.target.title.value);
+    
+                    // re-render the list of projects to reflect the change
+                    DOMController.displayProjects(projects);
+                });
+            }
+    
+            // NEED TO FIX
+            // function that handles the user choosing a different project to display
+            function setupInboxToggle() {
+                // dom references
+                const nav_home_items = document.querySelectorAll('#default-options li');
+                nav_home_items.forEach((home_item) => {
+                    home_item.addEventListener('click', (event) => {
+                        // grab the currently active list item and toggle the class
+                        const curr_active = document.querySelector('#nav li.active');
+                        curr_active.classList.toggle('active');
+            
+                        // now make the targeted list item the active one
+                        event.currentTarget.classList.add('active');
+                    });
+                });
+            }
         }
-    }
-
-    function setupMainPanel() {
-        // to setup the main panel:
-        // - display the tasks associated with the active project
-        // - make the 'add_task' option dynamic by setting up the click and form logic
-        const active_project = scheduleController.getActiveProject();
-        DOMController.displayTasks(active_project);
-        setupAddTask();
-
-        function setupAddTask() {
-            // dom references
-            const add_task = document.querySelector('.add-item');
-            const add_task_dialog = document.querySelector('#add-task-dialog');
-            const add_task_form = document.querySelector('#add-task-form'); 
     
-            // open the add task form when the user clicks the button
-            add_task.addEventListener('click', () => {
-                add_task_dialog.showModal();
-            });
+        function setupMainPanel() {
+            // to setup the main panel:
+            // - display the tasks associated with the active project
+            // - make the 'add_task' option dynamic by setting up the click and form logic
+            const active_project = scheduleController.getActiveProject();
+            DOMController.displayTasks(active_project);
+            setupAddTask();
     
-            // create a new task when the user submits the form
-            add_task_form.addEventListener('submit', (event) => {
-                // grab the active project
-                const active_project = scheduleController.getActiveProject();
-
-                // create a new task with the form info and add it to the active project
-                active_project.addItem (
-                    event.target.title.value, 
-                    event.target.desc.value, 
-                    event.target.dueDate.value, 
-                    event.target.prio.value
-                );
+            function setupAddTask() {
+                // dom references
+                const add_task = document.querySelector('.add-item');
+                const add_task_dialog = document.querySelector('#add-task-dialog');
+                const add_task_form = document.querySelector('#add-task-form'); 
+        
+                // open the add task form when the user clicks the button
+                add_task.addEventListener('click', () => {
+                    add_task_dialog.showModal();
+                });
+        
+                // create a new task when the user submits the form
+                add_task_form.addEventListener('submit', (event) => {
+                    // grab the active project
+                    const active_project = scheduleController.getActiveProject();
     
-                // re-render the list of tasks for the active project to reflect the change
-                DOMController.displayTasks(active_project);
-            });
+                    // create a new task with the form info and add it to the active project
+                    active_project.addItem (
+                        event.target.title.value, 
+                        event.target.desc.value, 
+                        event.target.dueDate.value, 
+                        event.target.prio.value
+                    );
+        
+                    // re-render the list of tasks for the active project to reflect the change
+                    DOMController.displayTasks(active_project);
+                });
+            }
         }
-    }
+    };
 
     const setupEditProject = function setupEditProject(edit_icon) {
         // dom references
