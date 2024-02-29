@@ -199,6 +199,7 @@ const DOMController = function DOMController() {
             task_delete.textContent = 'delete';
             task_delete.classList.add('material-icons');
             task_delete.classList.add('delete');
+            pageInterface.setupDeleteTask(task_delete);
 
             // only append 'desc' div if the task has a description
             if (task.desc !== '') {
@@ -244,7 +245,7 @@ const pageInterface = function pageInterface() {
         setupMainPanel();
     }
 
-    const setupSidebar = function setupSidebar() {
+    function setupSidebar() {
         // to setup the sidebar:
         // - display the list of projects 
         // - make the project list dynamic and clickable (.active toggling) 
@@ -313,7 +314,45 @@ const pageInterface = function pageInterface() {
                 });
             });
         }
-    };
+    }
+
+    function setupMainPanel() {
+        // to setup the main panel:
+        // - display the tasks associated with the active project
+        // - make the 'add_task' option dynamic by setting up the click and form logic
+        const active_project = scheduleController.getActiveProject();
+        DOMController.displayTasks(active_project);
+        setupAddTask();
+
+        function setupAddTask() {
+            // dom references
+            const add_task = document.querySelector('.add-item');
+            const add_task_dialog = document.querySelector('#add-task-dialog');
+            const add_task_form = document.querySelector('#add-task-form'); 
+    
+            // open the add task form when the user clicks the button
+            add_task.addEventListener('click', () => {
+                add_task_dialog.showModal();
+            });
+    
+            // create a new task when the user submits the form
+            add_task_form.addEventListener('submit', (event) => {
+                // grab the active project
+                const active_project = scheduleController.getActiveProject();
+
+                // create a new task with the form info and add it to the active project
+                active_project.addItem (
+                    event.target.title.value, 
+                    event.target.desc.value, 
+                    event.target.dueDate.value, 
+                    event.target.prio.value
+                );
+    
+                // re-render the list of tasks for the active project to reflect the change
+                DOMController.displayTasks(active_project);
+            });
+        }
+    }
 
     const setupEditProject = function setupEditProject(edit_icon) {
         // dom references
@@ -351,68 +390,23 @@ const pageInterface = function pageInterface() {
         });
     };
 
-    const setupMainPanel = function setupMainPanel() {
-        // grab the active project from the back-end
-        const active_project = scheduleController.getActiveProject();
+    const setupDeleteTask = function setupDeleteTask(delete_icon) {
+        // delete the associated list item when the user click the delete material-icon 
+        delete_icon.addEventListener('click', (event) => {
+            // grab the list item the delete icon belongs to -- three levels up the DOM tree 
+            const list_item = event.target.parentNode.parentNode.parentNode;
 
-        function setupRemoveTask() {
-            // dom references
-            const delete_icons = document.querySelectorAll('li.todo-item span.material-icons.delete');
+            // remove the associated task from the active project
+            const active_project = scheduleController.getActiveProject();
+            const index = list_item.dataset.index;
+            active_project.deleteItem(index);
 
-            // delete the associated list item when the user clicks one of the delete material-icons 
-            delete_icons.forEach((delete_icon) => {
-                delete_icon.addEventListener('click', (event) => {
-                    // grab the list item the delete icon belongs to -- three levels up the DOM tree 
-                    const list_item = event.target.parentNode.parentNode.parentNode;
-
-                    // remove the associated task from the active project
-                    const index = list_item.dataset.index;
-                    active_project.deleteItem(index);
-
-                    // re-render the list of tasks for the active project to reflect the change
-                    DOMController.displayTasks(active_project);
-                    setupRemoveTask();
-                });
-            });
-        }
-
-        function setupAddTask() {
-            // dom references
-            const add_task = document.querySelector('.add-item');
-            const add_task_dialog = document.querySelector('#add-task-dialog');
-            const add_task_form = document.querySelector('#add-task-form'); 
-    
-            // open the add task form when the user clicks the button
-            add_task.addEventListener('click', () => {
-                add_task_dialog.showModal();
-            });
-    
-            // create a new task when the user submits the form
-            add_task_form.addEventListener('submit', (event) => {
-                // create a new task with the form info and add it to the active project
-                active_project.addItem (
-                    event.target.title.value, 
-                    event.target.desc.value, 
-                    event.target.dueDate.value, 
-                    event.target.prio.value
-                );
-    
-                // re-render the list of tasks for the active project to reflect the change
-                DOMController.displayTasks(active_project);
-                setupRemoveTask();
-            });
-        }
-
-        // to setup the main panel:
-        // - display the tasks associated with the active project
-        // - link up the delete logo's with the delete operation in the back-end
-        // - make the 'add_task' option dynamic by setting up the click and form logic
-        DOMController.displayTasks(active_project);
-        setupRemoveTask();
-        setupAddTask();
+            // re-render the list of tasks for the active project to reflect the change
+            DOMController.displayTasks(active_project);
+        });
     };
 
-    return { initializePage, setupDeleteProject, setupEditProject }
+    return { initializePage, setupDeleteProject, setupEditProject, setupDeleteTask }
 }();
 
 function debug() {
