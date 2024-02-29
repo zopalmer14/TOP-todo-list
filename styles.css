@@ -72,7 +72,7 @@ body {
 .showing {
     display: block !important;
     transform-origin: top;
-    animation: 1s ease-in-out fadeIn;
+    animation: 0.5s ease-in-out fadeIn;
 }
 
 @keyframes fadeIn {
@@ -270,7 +270,7 @@ body {
     border-color: var(--blue-accent);
     background-color: var(--blue-accent);
     color: var(--white-accent);
-    transition: 0.5s;
+    transition: 0.25s;
 }
 
 .content .main-panel .todo-item .banner .item-title {

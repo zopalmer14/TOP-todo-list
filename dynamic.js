@@ -101,12 +101,14 @@ const DOMController = function DOMController() {
             item_edit.classList.add('material-icons');
             item_edit.classList.add('edit');
             item_edit.textContent = 'edit_note';
+            pageInterface.setupEditProject(item_edit);
 
             // create the delete option
             const item_delete = document.createElement('span');
             item_delete.classList.add('material-icons');
             item_delete.classList.add('delete');
             item_delete.textContent = 'delete';
+            pageInterface.setupDeleteProject(item_delete);
 
             // append both to the right side
             right_side.appendChild(item_edit);
@@ -232,36 +234,27 @@ const DOMController = function DOMController() {
         }
     };
 
-    return { displayProjects, displayTasks};
+    return { displayProjects, displayTasks };
 }();
 
 // abstract layer outside of the controllers that facilitates their communication
-const pageManager = function pageManager() {
+const pageInterface = function pageInterface() {
+    const initializePage = function initializePage() {
+        setupSidebar();
+        setupMainPanel();
+    }
+
     const setupSidebar = function setupSidebar() {
-        // get the list of projects from the back-end
+        // to setup the sidebar:
+        // - display the list of projects 
+        // - make the project list dynamic and clickable (.active toggling) 
+        // - make the 'add project' option dynamic by setting up the click and form logic
+        // - setup the edit project form 
         const projects = scheduleController.getProjects();
-
-        function setupRemoveProject() {
-            // dom references
-            const delete_icons = document.querySelectorAll('#personal-projects span.material-icons.delete');
-
-            // delete the associated project when the user clicks one of the delete material-icons 
-            delete_icons.forEach((delete_icon) => {
-                delete_icon.addEventListener('click', (event) => {
-                    // grab the project that the delete icon belongs to -- two levels up the DOM tree 
-                    const project_item = event.target.parentNode.parentNode;
-
-                    // remove the associated project from the project list
-                    const index = project_item.dataset.index;
-                    scheduleController.deleteProject(index);
-
-                    // re-render the list of projects to reflect the change
-                    DOMController.displayProjects(projects);
-                    setupRemoveProject();
-                    setupEditProject();
-                });
-            });
-        }
+        DOMController.displayProjects(projects);
+        setupInboxToggle();
+        setupAddProject();
+        setupEditProjectForm();
 
         function setupAddProject() {
             // dom references
@@ -280,34 +273,15 @@ const pageManager = function pageManager() {
                 scheduleController.addProject(event.target.title.value);
     
                 // re-render the list of projects to reflect the change
+                const projects = scheduleController.getProjects();
                 DOMController.displayProjects(projects);
-                setupRemoveProject();
-                setupEditProject();
             });
         }
 
-        function setupEditProject() {
+        function setupEditProjectForm() {
             // dom references
-            const edit_icons = document.querySelectorAll('#nav span.material-icons.edit');
-            const edit_project_dialog = document.querySelector('#edit-project-dialog');
             const edit_project_form = document.querySelector('#edit-project-form'); 
-    
-            // open the edit project form when the option
-            edit_icons.forEach((edit_icon) => {
-                edit_icon.addEventListener('click', (event) => {
-                    // transmit the project index through the interaction
-                    const index = event.target.parentNode.parentNode.dataset.index;
-                    edit_project_form.dataset.projectIndex = index;
 
-                    // also prefill the title input with the current project title
-                    const projects = scheduleController.getProjects();
-                    const assoc_project = projects[index];
-                    edit_project_form.title.value = assoc_project.getTitle();
-
-                    edit_project_dialog.showModal();
-                });
-            });
-    
             // edit the project when the user submits the form
             edit_project_form.addEventListener('submit', (event) => {
                 // grab the project index
@@ -317,41 +291,64 @@ const pageManager = function pageManager() {
                 const projects = scheduleController.getProjects();
                 const assoc_project = projects[index];
                 assoc_project.setTitle(event.target.title.value);
-    
+
                 // re-render the list of projects to reflect the change
                 DOMController.displayProjects(projects);
-                setupRemoveProject();
-                setupEditProject();
             });
         }
 
-        // function that handles the user choosing a different project to display
-        const switchActive = (event) => {
-            // grab the currently active list item and toggle the class
-            const curr_active = document.querySelector('#nav li.active');
-            curr_active.classList.toggle('active');
-
-            // now make the targeted list item the active one
-            event.currentTarget.classList.add('active');
-        };
-
-        // to setup the sidebar:
-        // - display the list of projects 
-        // - make the project list dynamic and clickable (.active toggling) 
-        // - link up the delete logo's with the delete operation in the back-end
-        // - make the 'add project' option dynamic by setting up the click and form logic
-        // - enable the user to edit the project's 
-        DOMController.displayProjects(projects);
-
         // NEED TO FIX
-        const nav_home_items = document.querySelectorAll('#default-options li');
-        nav_home_items.forEach((home_item) => {
-            home_item.addEventListener('click', switchActive);
-        });
+        // function that handles the user choosing a different project to display
+        function setupInboxToggle() {
+            // dom references
+            const nav_home_items = document.querySelectorAll('#default-options li');
+            nav_home_items.forEach((home_item) => {
+                home_item.addEventListener('click', (event) => {
+                    // grab the currently active list item and toggle the class
+                    const curr_active = document.querySelector('#nav li.active');
+                    curr_active.classList.toggle('active');
+        
+                    // now make the targeted list item the active one
+                    event.currentTarget.classList.add('active');
+                });
+            });
+        }
+    };
 
-        setupRemoveProject();
-        setupAddProject();
-        setupEditProject()
+    const setupEditProject = function setupEditProject(edit_icon) {
+        // dom references
+        const edit_project_dialog = document.querySelector('#edit-project-dialog');
+        const edit_project_form = document.querySelector('#edit-project-form'); 
+
+        // open the edit project form when the icon is clicked
+        edit_icon.addEventListener('click', (event) => {
+            // transmit the project index through the interaction
+            const index = event.target.parentNode.parentNode.dataset.index;
+            edit_project_form.dataset.projectIndex = index;
+
+            // also prefill the title input with the current project title
+            const projects = scheduleController.getProjects();
+            const assoc_project = projects[index];
+            edit_project_form.title.value = assoc_project.getTitle();
+
+            edit_project_dialog.showModal();
+        });
+    };
+
+    const setupDeleteProject = function setupDeleteProject(delete_icon) {
+        // delete the associated project when the user clicks the delete material-icon 
+        delete_icon.addEventListener('click', (event) => {
+            // grab the project that the delete icon belongs to -- two levels up the DOM tree 
+            const project_item = event.target.parentNode.parentNode;
+
+            // remove the associated project from the project list
+            const index = project_item.dataset.index;
+            scheduleController.deleteProject(index);
+
+            // re-render the list of projects to reflect the change
+            const projects = scheduleController.getProjects();
+            DOMController.displayProjects(projects);
+        });
     };
 
     const setupMainPanel = function setupMainPanel() {
@@ -415,7 +412,7 @@ const pageManager = function pageManager() {
         setupAddTask();
     };
 
-    return { setupSidebar, setupMainPanel }
+    return { initializePage, setupDeleteProject, setupEditProject }
 }();
 
 function debug() {
@@ -435,8 +432,7 @@ function debug() {
     );
 
     // front-end setup
-    pageManager.setupSidebar();
-    pageManager.setupMainPanel();
+    pageInterface.initializePage();
 }
 
 debug();
