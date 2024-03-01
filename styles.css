@@ -409,7 +409,7 @@ form .main-panel {
     justify-content: space-between;
 }
 
-#add-task-form .main-panel > div {
+.task-form .main-panel > div {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -422,7 +422,7 @@ form .main-panel input, textarea {
     border-radius: 0.25rem;
 }
 
-#add-task-form .main-panel textarea {
+.task-form .main-panel textarea {
     min-height: 5rem;
     resize: none;
 }
@@ -432,37 +432,37 @@ form .main-panel input:focus, textarea:focus {
     outline: none;
 }
 
-#add-task-form .main-panel .label-float {
+.task-form .main-panel .label-float {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-#add-task-form .main-panel legend, label[for='dueDate'] {
+.task-form .main-panel legend, label[for='dueDate'] {
     font-weight: bold;
 }
 
-#add-task-form .main-panel input[type='date'] {
+.task-form .main-panel input[type='date'] {
     color: var(--blue-accent);
     border: 1px solid var(--blue-accent);
 }
 
-#add-task-form .main-panel #last-row {
+.task-form .main-panel #last-row {
     display: flex;
     justify-content: space-between;
 }
 
-#add-task-form .main-panel fieldset {
+.task-form .main-panel fieldset {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
-#add-task-form .main-panel fieldset legend {
+.task-form .main-panel fieldset legend {
     float: left;
 }
 
-#add-task-form .main-panel fieldset input {
+.task-form .main-panel fieldset input {
     position: absolute;
     opacity: 0;
     height: 0;
@@ -470,7 +470,7 @@ form .main-panel input:focus, textarea:focus {
     margin: 0;
 }
 
-#add-task-form .main-panel fieldset .container {
+.task-form .main-panel fieldset .container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -479,53 +479,53 @@ form .main-panel input:focus, textarea:focus {
     border-radius: 0.25rem;
 }
 
-#add-task-form .main-panel fieldset .container.low {
+.task-form .main-panel fieldset .container.low {
     color: var(--low-accent);
     border: 1px solid var(--low-accent);
 }
 
-#add-task-form .main-panel fieldset .container.medium {
+.task-form .main-panel fieldset .container.medium {
     color: var(--medium-accent);
     border: 1px solid var(--medium-accent);
 }
 
-#add-task-form .main-panel fieldset .container.high {
+.task-form .main-panel fieldset .container.high {
     color: var(--high-accent);
     border: 1px solid var(--high-accent);
 }
 
-#add-task-form .main-panel fieldset .container:hover {
+.task-form .main-panel fieldset .container:hover {
     color: var(--white-accent);
     cursor: pointer;
     transition: 0.5s;
 }
 
-#add-task-form .main-panel fieldset .container.low:hover {
+.task-form .main-panel fieldset .container.low:hover {
     background-color: var(--low-accent);
 }
 
-#add-task-form .main-panel fieldset .container.medium:hover {
+.task-form .main-panel fieldset .container.medium:hover {
     background-color: var(--medium-accent);
 }
 
-#add-task-form .main-panel fieldset .container.high:hover {
+.task-form .main-panel fieldset .container.high:hover {
     background-color: var(--high-accent);
 }
 
-#add-task-form .main-panel fieldset .container:has(input:checked) {
+.task-form .main-panel fieldset .container:has(input:checked) {
     color: var(--white-accent);
     transition: 0.5s;
 }
 
-#add-task-form .main-panel fieldset .container.low:has(input:checked) {
+.task-form .main-panel fieldset .container.low:has(input:checked) {
     background-color: var(--low-accent);
 }
 
-#add-task-form .main-panel fieldset .container.medium:has(input:checked) {
+.task-form .main-panel fieldset .container.medium:has(input:checked) {
     background-color: var(--medium-accent);
 }
 
-#add-task-form .main-panel fieldset .container.high:has(input:checked) {
+.task-form .main-panel fieldset .container.high:has(input:checked) {
     background-color: var(--high-accent);
 }
 

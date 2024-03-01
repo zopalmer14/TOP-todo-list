@@ -36,7 +36,7 @@
     </dialog>
 
     <dialog id="add-task-dialog">
-        <form method="dialog" id="add-task-form">
+        <form method="dialog" class="task-form" id="add-task-form">
             <div class="banner">
                 <div>Create a New Task</div>
             </div>
@@ -49,24 +49,68 @@
 
                 <div>
                     <div class="label-float">
-                        <label for="dueDate">Due Date:</label>
-                        <input required type="date" name="dueDate" id="dueDate">
+                        <label for="due-date">Due Date:</label>
+                        <input required type="date" name="dueDate" id="due-date">
                     </div>
 
                     <div id="last-row">
                         <fieldset class="label-float">
                             <legend>Priority:</legend>
 
-                            <label class="container low" for="prio_low">Low
-                                <input type="radio" name="prio" id="prio_low" value="low" checked>
+                            <label class="container low" for="prio-low">Low
+                                <input type="radio" name="prio" id="prio-low" value="low" checked>
                             </label>
 
-                            <label class="container medium" for="prio_medium">Medium
-                                <input type="radio" name="prio" id="prio_medium" value="medium">
+                            <label class="container medium" for="prio-medium">Medium
+                                <input type="radio" name="prio" id="prio-medium" value="medium">
                             </label>
 
-                            <label class="container high" for="prio_high">High
-                                <input type="radio" name="prio" id="prio_high" value="high">
+                            <label class="container high" for="prio-high">High
+                                <input type="radio" name="prio" id="prio-high" value="high">
+                            </label>
+                        </fieldset>
+    
+                        <div>
+                            <button>Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="edit-task-dialog">
+        <form method="dialog" class="task-form" id="edit-task-form">
+            <div class="banner">
+                <div>Create a New Task</div>
+            </div>
+
+            <div class="main-panel">
+                <div>
+                    <input required type="text" name="title" placeholder="Title: Personal Website">
+                    <textarea name="desc" placeholder="Details: 3 pages, portfolio section, bio, contact, ..."></textarea>
+                </div>
+
+                <div>
+                    <div class="label-float">
+                        <label for="edit-due-date">Due Date:</label>
+                        <input required type="date" name="dueDate" id="edit-due-date">
+                    </div>
+
+                    <div id="last-row">
+                        <fieldset class="label-float">
+                            <legend>Priority:</legend>
+
+                            <label class="container low" for="edit-prio-low">Low
+                                <input type="radio" name="prio" id="edit-prio-low" value="low" checked>
+                            </label>
+
+                            <label class="container medium" for="edit-prio-medium">Medium
+                                <input type="radio" name="prio" id="edit-prio-medium" value="medium">
+                            </label>
+
+                            <label class="container high" for="edit-prio-high">High
+                                <input type="radio" name="prio" id="edit-prio-high" value="high">
                             </label>
                         </fieldset>
     

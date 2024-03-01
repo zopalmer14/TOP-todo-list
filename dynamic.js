@@ -20,7 +20,23 @@ const scheduleController = function scheduleController() {
 
         // Task Item Factory Function 
         function toDoItem(title, desc, dueDate, prio) {
-            return { title, desc, dueDate, prio };
+            let task_title = title;
+            const getTitle = () => task_title;
+            const setTitle = (new_title) => task_title = new_title;
+
+            let task_desc = desc;
+            const getDesc = () => task_desc;
+            const setDesc = (new_desc) => task_desc = new_desc;
+
+            let task_due = dueDate;
+            const getDueDate = () => task_due;
+            const setDueDate = (new_date) => task_due = new_date;
+
+            let task_prio = prio;
+            const getPrio = () => task_prio;
+            const setPrio = (new_prio) => task_prio = new_prio;
+
+            return { getTitle, setTitle, getDesc, setDesc, getDueDate, setDueDate, getPrio, setPrio };
         };
 
         // add to-do item to project
@@ -178,7 +194,7 @@ const DOMController = function DOMController() {
 
             // create the desc-extension 
             const task_desc_ext = document.createElement('div');
-            task_desc_ext.textContent = task.desc;
+            task_desc_ext.textContent = task.getDesc();
             task_desc_ext.classList.add('desc-extension');
 
             // append the banner and desc extension to the task item
@@ -218,7 +234,7 @@ const DOMController = function DOMController() {
 
                     // task title
                     const task_title = document.createElement('div');
-                    task_title.textContent = task.title;
+                    task_title.textContent = task.getTitle();
                     task_title.classList.add('item-title');
 
                     left_side.appendChild(complete_status);
@@ -243,19 +259,20 @@ const DOMController = function DOMController() {
 
                     // task due date
                     const task_date = document.createElement('div');
-                    task_date.textContent = task.dueDate;
+                    task_date.textContent = task.getDueDate();
                     task_date.classList.add('item-date');
 
                     // task prio indicator
                     const task_prio = document.createElement('div');
                     task_prio.classList.add('item-prio');
-                    task_prio.classList.add(task.prio);
+                    task_prio.classList.add(task.getPrio());
 
                     // edit task symbol
                     const task_edit = document.createElement('span');
                     task_edit.textContent = 'edit_note';
                     task_edit.classList.add('material-icons');
                     task_edit.classList.add('edit');
+                    pageInterface.setupEditTask(task_edit);
 
                     // delete task symbol
                     const task_delete = document.createElement('span');
@@ -265,7 +282,7 @@ const DOMController = function DOMController() {
                     pageInterface.setupDeleteTask(task_delete);
 
                     // only append 'desc' div if the task has a description
-                    if (task.desc !== '') {
+                    if (task.getDesc() !== '') {
                         right_side.appendChild(task_desc);
                     }
 
@@ -319,6 +336,9 @@ const pageInterface = function pageInterface() {
                 add_project_form.addEventListener('submit', (event) => {
                     // create a new project with the form info and add it to the project list
                     scheduleController.addProject(event.target.title.value);
+
+                    // reset the form inputs
+                    add_project_form.reset(); 
         
                     // re-render the list of projects to reflect the change
                     const projects = scheduleController.getProjects();
@@ -370,6 +390,7 @@ const pageInterface = function pageInterface() {
             const active_project = scheduleController.getActiveProject();
             DOMController.displayTasks(active_project);
             setupAddTask();
+            setupEditTaskForm();
     
             function setupAddTask() {
                 // dom references
@@ -394,12 +415,57 @@ const pageInterface = function pageInterface() {
                         event.target.dueDate.value, 
                         event.target.prio.value
                     );
+
+                    // reset the form inputs
+                    add_task_form.reset(); 
         
                     // re-render the list of tasks for the active project to reflect the change
                     DOMController.displayTasks(active_project);
                 });
             }
+
+            function setupEditTaskForm() {
+                // dom references
+                const edit_task_form = document.querySelector('#edit-task-form'); 
+    
+                // edit the task when the user submits the form
+                edit_task_form.addEventListener('submit', (event) => {
+                    // grab the task index
+                    const index = edit_task_form.dataset.taskIndex;
+    
+                    // grab the active project
+                    const active_project = scheduleController.getActiveProject();
+
+                    // edit the associated task with the form info
+                    const tasks = active_project.getList();
+                    const assoc_task = tasks[index];
+
+                    assoc_task.setTitle(edit_task_form.title.value);
+                    assoc_task.setDesc(edit_task_form.desc.value);
+                    assoc_task.setDueDate(edit_task_form.dueDate.value);
+                    assoc_task.setPrio(edit_task_form.prio.value);
+    
+                    // re-render the list of tasks for the active project to reflect the change
+                    DOMController.displayTasks(active_project);
+                });
+            }
         }
+    };
+
+    const setupDeleteProject = function setupDeleteProject(delete_icon) {
+        // delete the associated project when the user clicks the delete material-icon 
+        delete_icon.addEventListener('click', (event) => {
+            // grab the project that the delete icon belongs to -- two levels up the DOM tree 
+            const project_item = event.target.parentNode.parentNode;
+
+            // remove the associated project from the project list
+            const index = project_item.dataset.index;
+            scheduleController.deleteProject(index);
+
+            // re-render the list of projects to reflect the change
+            const projects = scheduleController.getProjects();
+            DOMController.displayProjects(projects);
+        });
     };
 
     const setupEditProject = function setupEditProject(edit_icon) {
@@ -422,22 +488,6 @@ const pageInterface = function pageInterface() {
         });
     };
 
-    const setupDeleteProject = function setupDeleteProject(delete_icon) {
-        // delete the associated project when the user clicks the delete material-icon 
-        delete_icon.addEventListener('click', (event) => {
-            // grab the project that the delete icon belongs to -- two levels up the DOM tree 
-            const project_item = event.target.parentNode.parentNode;
-
-            // remove the associated project from the project list
-            const index = project_item.dataset.index;
-            scheduleController.deleteProject(index);
-
-            // re-render the list of projects to reflect the change
-            const projects = scheduleController.getProjects();
-            DOMController.displayProjects(projects);
-        });
-    };
-
     const setupDeleteTask = function setupDeleteTask(delete_icon) {
         // delete the associated list item when the user click the delete material-icon 
         delete_icon.addEventListener('click', (event) => {
@@ -454,7 +504,35 @@ const pageInterface = function pageInterface() {
         });
     };
 
-    return { initializePage, setupDeleteProject, setupEditProject, setupDeleteTask }
+    const setupEditTask = function setupEditTask(edit_icon) {
+        // dom references
+        const edit_task_dialog = document.querySelector('#edit-task-dialog');
+        const edit_task_form = document.querySelector('#edit-task-form'); 
+
+        // open the edit task form when the icon is clicked
+        edit_icon.addEventListener('click', (event) => {
+            // grab the list item the edit icon belongs to -- three levels up the DOM tree 
+            const list_item = event.target.parentNode.parentNode.parentNode;
+
+            // transmit the task index through the interaction
+            const index = list_item.dataset.index;
+            edit_task_form.dataset.taskIndex = index;
+
+            // also prefill the inputs with the current values from the assoc task
+            const active_project = scheduleController.getActiveProject();
+            const tasks = active_project.getList();
+            const assoc_task = tasks[index];
+
+            edit_task_form.title.value = assoc_task.getTitle();
+            edit_task_form.desc.value = assoc_task.getDesc();
+            edit_task_form.dueDate.value = assoc_task.getDueDate();
+            edit_task_form.prio.value = assoc_task.getPrio();
+
+            edit_task_dialog.showModal();
+        });
+    };
+
+    return { initializePage, setupDeleteProject, setupEditProject, setupDeleteTask, setupEditTask }
 }();
 
 function debug() {
