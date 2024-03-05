@@ -195,13 +195,32 @@ const DOMController = function DOMController() {
 
         // function to sort the tasks by priority
         const sortByPrio = function sortByPrio(taskA, taskB) {
-            if (taskA.getPrio() < taskB.getPrio()) {
-                return -1;
-            } else if (taskA.getPrio() > taskB.getPrio()) {
-                return 1;
-            } else {
-                return 0;
+            const prioA = taskA.getPrio();
+            const prioB = taskB.getPrio();
+
+            let result = 'error';
+
+            switch (prioA) {
+                case 'low':
+                    result = prioB === 'low' ? 0 : -1;
+                    break;
+                case 'high':
+                    result = prioB === 'high' ? 0 : 1;
+                    break;
+                case 'medium':
+                    switch (prioB) {
+                        case 'low':
+                            result = 1;
+                            break;
+                        case 'high':
+                            result = -1;
+                            break;
+                        case 'medium':
+                            result = 0;
+                    }
             }
+
+            return result;
         };
 
         // sort by priority if sort_variable = true; by due date otherwise
