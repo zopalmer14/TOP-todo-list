@@ -174,14 +174,49 @@ const DOMController = function DOMController() {
         // grab the task / to-do list
         const tasks = project.getTasks();
 
-        for (let i = 0; i < tasks.length; i++) {
-            // create a list item to represent each task
-            const task = tasks[i];
-            const task_item = createTaskItem(task, i); 
+        // grab the sort input and determine the variable to sort by 
+        const sort_input = document.querySelector('#sort-variable');
+        const sort_variable = sort_input.checked;
 
-            // append the item to the task list
-            task_list.appendChild(task_item);
+        // grab the sort DESC input  
+        const sort_descending = document.querySelector('#sort-descending');
+        const sort_desc = sort_descending.checked;
+
+        // function to sort the tasks by the due date
+        const sortByDueDate = function sortByDueDate(taskA, taskB) {
+            if (taskA.getDueDate() < taskB.getDueDate()) {
+                return -1;
+            } else if (taskA.getDueDate() > taskB.getDueDate()) {
+                return 1;
+            } else {
+                return 0;
+            }
+        };
+
+        // function to sort the tasks by priority
+        const sortByPrio = function sortByPrio(taskA, taskB) {
+            if (taskA.getPrio() < taskB.getPrio()) {
+                return -1;
+            } else if (taskA.getPrio() > taskB.getPrio()) {
+                return 1;
+            } else {
+                return 0;
+            }
+        };
+
+        // sort by priority if sort_variable = true; by due date otherwise
+        sort_variable ? tasks.sort(sortByPrio) : tasks.sort(sortByDueDate);
+
+        // reverse the book order if the DESC option is true (checked)
+        if (sort_desc) {
+            tasks.reverse();
         }
+
+        // create a task-item for each task and add it to the list 
+        tasks.forEach((task, index) => {
+            const task_item = createTaskItem(task, index); 
+            task_list.appendChild(task_item);
+        });
 
         // helper function to create a task item
         function createTaskItem(task, taskIndex) {
@@ -387,10 +422,13 @@ const pageInterface = function pageInterface() {
             // to setup the main panel:
             // - display the tasks associated with the active project
             // - make the 'add_task' option dynamic by setting up the click and form logic
+            // - setup the 'edit_task' form to handle editing the tasks in the back-end
+            // - setup the sorting options to re-render the tasks when changed  
             const active_project = scheduleController.getActiveProject();
             DOMController.displayTasks(active_project);
             setupAddTask();
             setupEditTaskForm();
+            setupTaskSorting();
     
             function setupAddTask() {
                 // dom references
@@ -446,6 +484,25 @@ const pageInterface = function pageInterface() {
                     assoc_task.setPrio(edit_task_form.prio.value);
     
                     // re-render the list of tasks for the active project to reflect the change
+                    DOMController.displayTasks(active_project);
+                });
+            }
+
+            // function that re-renders tasks when the sorting options is changed / toggled
+            function setupTaskSorting() {
+                // DOM references
+                const sort_variable = document.querySelector('#sort-variable');
+                const sort_descending = document.querySelector('#sort-descending');
+
+                // if the sort variable is changed we must re-render the tasks
+                sort_variable.addEventListener('change', () => {
+                    const active_project = scheduleController.getActiveProject();
+                    DOMController.displayTasks(active_project);
+                });
+
+                // if the sort DESC option is changed we must re-render the tasks
+                sort_descending.addEventListener('change', () => {
+                    const active_project = scheduleController.getActiveProject();
                     DOMController.displayTasks(active_project);
                 });
             }

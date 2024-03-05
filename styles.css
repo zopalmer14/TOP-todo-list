@@ -201,9 +201,15 @@ body {
 /* MAIN PANEL STYLING */
 
 .content .main-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
     background-color: var(--gray-accent);
     padding: 2rem;
 }
+
+/* MAIN PANEL - TO-DO LIST / ITEM */
 
 .content .main-panel .todo-list {
     display: flex;
@@ -334,7 +340,7 @@ body {
     transition: 0.5s;
 }
 
-/* ADD TO-DO ITEM */
+/* MAIN PANEL - ADD TO-DO ITEM */
 
 .content .main-panel .add-item {
     font-weight: bold;
@@ -363,11 +369,62 @@ body {
     font-size: 18px; 
 }
 
-/* DIALOG / FORM STYLING */
+/* MAIN PANEL - SORTING OPTIONS */
 
-.project-form .main-panel button {
+.content .main-panel > div {
     align-self: flex-end;
+    display: flex;
+    gap: 1rem;
 }
+
+.content .main-panel label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding: 0.75rem 1.5rem;
+    background-color: white;
+    border: 1px solid var(--green-accent);
+    border-radius: 5px;
+
+    color: var(--blue-accent);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 14px;
+    transition: 0.5s ease-in-out;
+}
+
+.content .main-panel label:hover {
+    color: white;
+    background-color: rgba(49, 140, 231, 0.5);
+    border-color: rgba(49, 140, 231, 0.5);
+    user-select: none;
+    cursor: pointer;
+}
+
+.content .main-panel label:has(input:checked) {
+    color: white;
+    background-color: var(--blue-accent);
+}
+
+.content .main-panel label:has(input:checked):hover {
+    filter: brightness(0.8);
+}
+
+.content .main-panel label span.material-icons.md-18 {
+    font-size: 18px;
+}
+
+.content .main-panel input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+    margin: 0;
+}
+
+/* DIALOG / FORM STYLING */
 
 dialog {
     padding: 0;
@@ -542,4 +599,8 @@ form .main-panel button:hover {
     color: var(--white-accent);
     cursor: pointer;
     transition: 0.5s;
+}
+
+.project-form .main-panel button {
+    align-self: flex-end;
 }
