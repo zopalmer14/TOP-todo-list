@@ -11,8 +11,8 @@ const scheduleController = function scheduleController() {
 
     // Project Factory Function (i.e. a list of to-do items)
     function projectItem(title) {
-        const toDoList = [];
-        const getList = () => toDoList;
+        const taskList = [];
+        const getTasks = () => taskList;
 
         let project_title = title;
         const getTitle = () => project_title;
@@ -42,19 +42,19 @@ const scheduleController = function scheduleController() {
         // add to-do item to project
         const addItem = function addItem(title, desc, dueDate, prio) {
             const new_item = toDoItem(title, desc, dueDate, prio);
-            toDoList.push(new_item);
+            taskList.push(new_item);
         };
 
         // delete to-do item from project
         const deleteItem = function deleteItem(index) {
-            if (index > -1 && index < toDoList.length) {
-                toDoList.splice(index, 1); 
+            if (index > -1 && index < taskList.length) {
+                taskList.splice(index, 1); 
             } else {
                 console.log(`Error: index out of bounds ${index}`);
             }
         };
 
-        return { getList, getTitle, setTitle, addItem, deleteItem }
+        return { getTasks, getTitle, setTitle, addItem, deleteItem }
     };
 
     // add project to list
@@ -172,7 +172,7 @@ const DOMController = function DOMController() {
         task_list.replaceChildren(add_task);
         
         // grab the task / to-do list
-        const tasks = project.getList();
+        const tasks = project.getTasks();
 
         for (let i = 0; i < tasks.length; i++) {
             // create a list item to represent each task
@@ -437,7 +437,7 @@ const pageInterface = function pageInterface() {
                     const active_project = scheduleController.getActiveProject();
 
                     // edit the associated task with the form info
-                    const tasks = active_project.getList();
+                    const tasks = active_project.getTasks();
                     const assoc_task = tasks[index];
 
                     assoc_task.setTitle(edit_task_form.title.value);
@@ -520,7 +520,7 @@ const pageInterface = function pageInterface() {
 
             // also prefill the inputs with the current values from the assoc task
             const active_project = scheduleController.getActiveProject();
-            const tasks = active_project.getList();
+            const tasks = active_project.getTasks();
             const assoc_task = tasks[index];
 
             edit_task_form.title.value = assoc_task.getTitle();
@@ -556,4 +556,36 @@ function debug() {
 }
 
 debug();
+
+// gathers all tasks across projects to display in the inbox
+function gatherAllTasks() {
+    // grab the list of projects
+    const projects = scheduleController.getProjects();
+
+    // iterate over the projects and add their tasks to the overall list
+    all_tasks = [];
+    projects.forEach((project) => {
+        const project_tasks = project.getTasks();
+        all_tasks = all_tasks.concat(project_tasks);
+    });
+
+    console.log(all_tasks);
+    return all_tasks;
+}
+
+// grabs the list of all tasks then filters to keep only those due today
+function gatherTodaysTasks() {
+    const all_tasks = gatherAllTasks();
+    // FIX
+    const todays_tasks = all_tasks.filter((task) => task.getDueDate() === 'today');
+    return todays_tasks;
+}
+
+// grabs the list of all tasks then filters to keep only those due this week
+function gatherWeeklyTasks() {
+    const all_tasks = gatherAllTasks();
+    // FIX
+    const weekly_tasks = all_tasks.filter((task) => task.getDueDate() === 'placeholder');
+    return weekly_tasks;
+}
 
