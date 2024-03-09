@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+    <dialog id="add-project-dialog">
+        <form method="dialog" class="project-form" id="add-project-form">
+            <div class="banner">
+                <div>Create a New Project</div>
+            </div>
+
+            <div class="main-panel">
+                <input required type="text" name="title" placeholder="Title: Personal Website">
+                <button>Submit</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="edit-project-dialog">
+        <form method="dialog" class="project-form" id="edit-project-form">
+            <div class="banner">
+                <div>Create a New Project</div>
+            </div>
+
+            <div class="main-panel">
+                <input required type="text" name="title" placeholder="Title: Personal Website">
+                <button>Submit</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="add-task-dialog">
+        <form method="dialog" class="task-form" id="add-task-form">
+            <div class="banner">
+                <div>Create a New Task</div>
+            </div>
+
+            <div class="main-panel">
+                <div>
+                    <input required type="text" name="title" placeholder="Title: Personal Website">
+                    <textarea name="desc" placeholder="Details: 3 pages, portfolio section, bio, contact, ..."></textarea>
+                </div>
+
+                <div>
+                    <div class="label-float">
+                        <label for="due-date">Due Date:</label>
+                        <input required type="date" name="dueDate" id="due-date">
+                    </div>
+
+                    <div id="last-row">
+                        <fieldset class="label-float">
+                            <legend>Priority:</legend>
+
+                            <label class="container low" for="prio-low">Low
+                                <input type="radio" name="prio" id="prio-low" value="low" checked>
+                            </label>
+
+                            <label class="container medium" for="prio-medium">Medium
+                                <input type="radio" name="prio" id="prio-medium" value="medium">
+                            </label>
+
+                            <label class="container high" for="prio-high">High
+                                <input type="radio" name="prio" id="prio-high" value="high">
+                            </label>
+                        </fieldset>
+    
+                        <div>
+                            <button>Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="edit-task-dialog">
+        <form method="dialog" class="task-form" id="edit-task-form">
+            <div class="banner">
+                <div>Create a New Task</div>
+            </div>
+
+            <div class="main-panel">
+                <div>
+                    <input required type="text" name="title" placeholder="Title: Personal Website">
+                    <textarea name="desc" placeholder="Details: 3 pages, portfolio section, bio, contact, ..."></textarea>
+                </div>
+
+                <div>
+                    <div class="label-float">
+                        <label for="edit-due-date">Due Date:</label>
+                        <input required type="date" name="dueDate" id="edit-due-date">
+                    </div>
+
+                    <div id="last-row">
+                        <fieldset class="label-float">
+                            <legend>Priority:</legend>
+
+                            <label class="container low" for="edit-prio-low">Low
+                                <input type="radio" name="prio" id="edit-prio-low" value="low" checked>
+                            </label>
+
+                            <label class="container medium" for="edit-prio-medium">Medium
+                                <input type="radio" name="prio" id="edit-prio-medium" value="medium">
+                            </label>
+
+                            <label class="container high" for="edit-prio-high">High
+                                <input type="radio" name="prio" id="edit-prio-high" value="high">
+                            </label>
+                        </fieldset>
+    
+                        <div>
+                            <button>Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </dialog>
+
+    <div class="content">
+        <div class="header">
+            <span class="material-icons">checklist</span>
+            <div>To-Do List</div>
+        </div>
+
+        <div id="sidebar">
+            <ul id="nav">
+                <ul data-title="Home" id="default-options">
+                    <li class="active">
+                        <div><span class="material-icons">inbox</span>All</div>
+                    </li>
+                    <li>
+                        <div><span class="material-icons">today</span>Today</div>
+                    </li>
+                    <li>
+                        <div><span class="material-icons">date_range</span>Weekly</div>
+                    </li>
+                </ul>
+                <ul data-title="Projects" id="personal-projects">
+                    <li class="add-project">
+                        <div><span class="material-icons md-18">add</span>Add Project</div>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+
+        <div class="main-panel">
+            <ul class="todo-list">
+                <li class="add-item">
+                    <span class="material-icons md-18">add</span>Add Task
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
