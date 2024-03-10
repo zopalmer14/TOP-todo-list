@@ -1,4 +1,6 @@
 
+import './styles.css';
+
 // back-end SCHEDULE CONTROLLER
 const scheduleController = function scheduleController() {
     // list of projects
