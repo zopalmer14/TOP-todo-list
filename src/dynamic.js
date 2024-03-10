@@ -1,5 +1,9 @@
 
+// css bundling
 import './styles.css';
+
+// package bundling
+import { format, isToday, isThisWeek, compareAsc } from "date-fns";
 
 // back-end SCHEDULE CONTROLLER
 const scheduleController = function scheduleController() {
@@ -180,20 +184,15 @@ const DOMController = function DOMController() {
         const sort_input = document.querySelector('#sort-variable');
         const sort_variable = sort_input.checked;
 
+        console.log(sort_input.checked);
+        console.log('sort variable - ' + sort_variable);
+
         // grab the sort DESC input  
         const sort_descending = document.querySelector('#sort-descending');
         const sort_desc = sort_descending.checked;
 
-        // function to sort the tasks by the due date
-        const sortByDueDate = function sortByDueDate(taskA, taskB) {
-            if (taskA.getDueDate() < taskB.getDueDate()) {
-                return -1;
-            } else if (taskA.getDueDate() > taskB.getDueDate()) {
-                return 1;
-            } else {
-                return 0;
-            }
-        };
+        console.log(sort_descending.checked);
+        console.log('sort direction - ' + sort_desc);
 
         // function to sort the tasks by priority
         const sortByPrio = function sortByPrio(taskA, taskB) {
@@ -226,7 +225,7 @@ const DOMController = function DOMController() {
         };
 
         // sort by priority if sort_variable = true; by due date otherwise
-        sort_variable ? tasks.sort(sortByPrio) : tasks.sort(sortByDueDate);
+        sort_variable ? tasks.sort(sortByPrio) : tasks.sort(compareAsc);
 
         // reverse the book order if the DESC option is true (checked)
         if (sort_desc) {
@@ -315,7 +314,7 @@ const DOMController = function DOMController() {
 
                     // task due date
                     const task_date = document.createElement('div');
-                    task_date.textContent = task.getDueDate();
+                    task_date.textContent = format(task.getDueDate(), 'MMM d');
                     task_date.classList.add('item-date');
 
                     // task prio indicator
@@ -471,7 +470,7 @@ const pageInterface = function pageInterface() {
                     active_project.addItem (
                         event.target.title.value, 
                         event.target.desc.value, 
-                        event.target.dueDate.value, 
+                        event.target.dueDate.valueAsDate, 
                         event.target.prio.value
                     );
 
@@ -501,7 +500,7 @@ const pageInterface = function pageInterface() {
 
                     assoc_task.setTitle(edit_task_form.title.value);
                     assoc_task.setDesc(edit_task_form.desc.value);
-                    assoc_task.setDueDate(edit_task_form.dueDate.value);
+                    assoc_task.setDueDate(edit_task_form.dueDate.valueAsDate);
                     assoc_task.setPrio(edit_task_form.prio.value);
     
                     // re-render the list of tasks for the active project to reflect the change
@@ -517,12 +516,14 @@ const pageInterface = function pageInterface() {
 
                 // if the sort variable is changed we must re-render the tasks
                 sort_variable.addEventListener('change', () => {
+                    console.log('change - sort variable');
                     const active_project = scheduleController.getActiveProject();
                     DOMController.displayTasks(active_project);
                 });
 
                 // if the sort DESC option is changed we must re-render the tasks
                 sort_descending.addEventListener('change', () => {
+                    console.log('change - sort direction');
                     const active_project = scheduleController.getActiveProject();
                     DOMController.displayTasks(active_project);
                 });
@@ -603,7 +604,7 @@ const pageInterface = function pageInterface() {
 
             edit_task_form.title.value = assoc_task.getTitle();
             edit_task_form.desc.value = assoc_task.getDesc();
-            edit_task_form.dueDate.value = assoc_task.getDueDate();
+            edit_task_form.dueDate.valueAsDate = assoc_task.getDueDate();
             edit_task_form.prio.value = assoc_task.getPrio();
 
             edit_task_dialog.showModal();
@@ -616,18 +617,6 @@ const pageInterface = function pageInterface() {
 function debug() {
     // add test project
     scheduleController.addProject('Test Project');
-
-    // grab the test project
-    const projects = scheduleController.getProjects();
-    const test_project = projects[0];
-
-    // create and add a test task to the project
-    test_project.addItem (
-        'To-Do Website Back-End', 
-        'Finish setting up the back-end handling of tasks and projects, then link up with front-end display',
-        'Feb 21st',
-        'medium'
-    );
 
     // front-end setup
     pageInterface.initializePage();
@@ -654,16 +643,14 @@ function gatherAllTasks() {
 // grabs the list of all tasks then filters to keep only those due today
 function gatherTodaysTasks() {
     const all_tasks = gatherAllTasks();
-    // FIX
-    const todays_tasks = all_tasks.filter((task) => task.getDueDate() === 'today');
+    const todays_tasks = all_tasks.filter((task) => isToday(task.getDueDate()));
     return todays_tasks;
 }
 
 // grabs the list of all tasks then filters to keep only those due this week
 function gatherWeeklyTasks() {
     const all_tasks = gatherAllTasks();
-    // FIX
-    const weekly_tasks = all_tasks.filter((task) => task.getDueDate() === 'placeholder');
+    const weekly_tasks = all_tasks.filter((task) => isThisWeek(task.getDueDate()));
     return weekly_tasks;
 }
 
