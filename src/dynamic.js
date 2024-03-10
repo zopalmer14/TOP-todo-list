@@ -184,15 +184,18 @@ const DOMController = function DOMController() {
         const sort_input = document.querySelector('#sort-variable');
         const sort_variable = sort_input.checked;
 
-        console.log(sort_input.checked);
         console.log('sort variable - ' + sort_variable);
 
         // grab the sort DESC input  
         const sort_descending = document.querySelector('#sort-descending');
         const sort_desc = sort_descending.checked;
 
-        console.log(sort_descending.checked);
         console.log('sort direction - ' + sort_desc);
+
+        // function to sort the tasks by due date
+        const sortByDate = function sortByDate(taskA, taskB) {
+            return compareAsc(taskA.getDueDate(), taskB.getDueDate());
+        }
 
         // function to sort the tasks by priority
         const sortByPrio = function sortByPrio(taskA, taskB) {
@@ -225,7 +228,11 @@ const DOMController = function DOMController() {
         };
 
         // sort by priority if sort_variable = true; by due date otherwise
-        sort_variable ? tasks.sort(sortByPrio) : tasks.sort(compareAsc);
+        if (sort_variable) {
+            tasks.sort(sortByPrio)
+        } else {
+            tasks.sort(sortByDate);
+        }
 
         // reverse the book order if the DESC option is true (checked)
         if (sort_desc) {
@@ -636,7 +643,6 @@ function gatherAllTasks() {
         all_tasks = all_tasks.concat(project_tasks);
     });
 
-    console.log(all_tasks);
     return all_tasks;
 }
 
